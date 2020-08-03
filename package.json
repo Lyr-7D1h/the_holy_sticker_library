@@ -1,0 +1,19 @@
+{
+  "name": "holy_sticker_library",
+  "version": "1.0.0",
+  "description": "A whatsapp bot for saving and sending stickers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot",
+    "whatsapp"
+  ],
+  "author": "Lyr",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "twilio": "^3.48.1"
+  }
+}
