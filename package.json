@@ -4,6 +4,8 @@
   "description": "A whatsapp bot for saving and sending stickers",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "NODE_ENV=development; nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -14,6 +16,11 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "fastify": "^3.1.1",
+    "fastify-autoload": "^3.0.6",
+    "fastify-env": "^2.0.1",
+    "fastify-formbody": "^4.0.3",
     "twilio": "^3.48.1"
-  }
+  },
+  "devDependencies": {}
 }
