@@ -3,7 +3,7 @@ require("dotenv").config();
 const fastifyAutload = require("fastify-autoload");
 const path = require("path");
 
-const fastify = require("fastify")({ logger: true });
+const fastify = require("fastify")({ logger: false });
 
 fastify.register(require("fastify-env"), {
   schema: {
