@@ -1,45 +1,37 @@
-require("dotenv").config();
+// require("dotenv").config();
 
-const fastifyAutload = require("fastify-autoload");
+const fastifyAutoload = require("fastify-autoload");
 const path = require("path");
+const conf = { isLoggedIn: false };
 
-const fastify = require("fastify")({ logger: false });
+const fastify = require("fastify")({ logger: true });
 
-fastify.register(require("fastify-env"), {
-  schema: {
-    ACCOUNT_SID: { type: "string" },
-    AUTH_TOKEN: { type: "string" },
-  },
-});
+fastify
+  .decorate("conf", conf)
 
-fastify.register(require("fastify-formbody"));
+  .register(require("fastify-env"), {
+    schema: {
+      // ACCOUNT_SID: { type: "string" },
+      // AUTH_TOKEN: { type: "string" },
+    },
+  })
 
-fastify.register(fastifyAutload, {
-  dir: path.join(__dirname, "routes"),
-});
+  .register(require("fastify-formbody"))
 
-fastify.listen(5000, (err) => {
-  if (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
+  .register(require("fastify-sensible"))
 
-  console.log(fastify.printRoutes());
+  .register(fastifyAutoload, {
+    dir: path.join(__dirname, "plugins"),
+  })
+  .register(fastifyAutoload, {
+    dir: path.join(__dirname, "routes"),
+  })
 
-  fastify.log.info("Listening for messages...");
-});
+  .listen(5000, (err) => {
+    if (err) {
+      fastify.log.error(err);
+      process.exit(1);
+    }
 
-// const client = require("twilio")(
-//   process.env.ACCOUNT_SID,
-//   process.env.AUTH_TOKEN
-// );
-
-// client.messages
-//   .create({
-//     from: "whatsapp:+14155238886", //"whatsapp:+12055765697",
-//     to: "whatsapp:+310658866140",
-//     body: "Test",
-//   })
-//   .then((msg) => {
-//     console.log(msg);
-//   });
+    console.log(fastify.printRoutes());
+  });
