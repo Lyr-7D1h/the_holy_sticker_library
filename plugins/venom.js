@@ -78,7 +78,7 @@ module.exports = fp(async (instance) => {
       )
       .then((client) => handler(client))
       .catch((err) => {
-        throw er;
+        throw err;
       });
 
     const writeQR = (qrCode) => {
