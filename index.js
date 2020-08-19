@@ -2,13 +2,10 @@
 
 const fastifyAutoload = require("fastify-autoload");
 const path = require("path");
-const conf = { isLoggedIn: false };
 
 const fastify = require("fastify")({ logger: true });
 
 fastify
-  .decorate("conf", conf)
-
   .register(require("fastify-env"), {
     schema: {
       // ACCOUNT_SID: { type: "string" },

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "NODE_ENV=development; nodemon -i session -i tokens -i resources index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
     "bot",
@@ -26,5 +26,7 @@
     "sqlite3": "^5.0.0",
     "venom-bot": "^1.1.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "mocha": "^8.1.1"
+  }
 }

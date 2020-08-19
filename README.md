@@ -8,7 +8,7 @@ A whatsapp bot for saving and sending stickers
 
 #### Requirements
 
-Node.js V10+
+Node.js V10+\
 NPM V6+
 
 #### Commands
