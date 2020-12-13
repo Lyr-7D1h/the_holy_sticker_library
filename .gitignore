@@ -1,4 +1,5 @@
 tokens
 session
 node_modules
+resources/*
 .env

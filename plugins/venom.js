@@ -16,6 +16,9 @@ let venomInfo = {
     }),
 };
 
+/**
+ * Setting up venom library to work with fastify
+ */
 module.exports = fp(
   async (instance) => {
     instance.decorate("venom", {

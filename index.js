@@ -8,8 +8,8 @@ const fastify = require("fastify")({ logger: true });
 fastify
   .register(require("fastify-env"), {
     schema: {
-      // ACCOUNT_SID: { type: "string" },
-      // AUTH_TOKEN: { type: "string" },
+      ACCOUNT_SID: { type: "string" },
+      AUTH_TOKEN: { type: "string" },
     },
   })
 
