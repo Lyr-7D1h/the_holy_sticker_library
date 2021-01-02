@@ -1,9 +1,17 @@
-// require("dotenv").config();
-
 const fastifyAutoload = require("fastify-autoload");
 const path = require("path");
 
-const fastify = require("fastify")({ logger: true });
+/*
+ * Server Setup
+ */
+
+const fastify = require("fastify")({
+  logger: {
+    prettyPrint: process.env.NODE_ENV === "development",
+    level: process.env.NODE_ENV === "development" ? "debug" : "info",
+  },
+  disableRequestLogging: true,
+});
 
 fastify
   .register(require("fastify-env"), {
@@ -30,5 +38,7 @@ fastify
       process.exit(1);
     }
 
-    console.log(fastify.printRoutes());
+    if (process.env.NODE_ENV === "development") {
+      console.log(fastify.printRoutes());
+    }
   });
