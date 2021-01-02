@@ -14,13 +14,6 @@ const fastify = require("fastify")({
 });
 
 fastify
-  .register(require("fastify-env"), {
-    schema: {
-      ACCOUNT_SID: { type: "string" },
-      AUTH_TOKEN: { type: "string" },
-    },
-  })
-
   .register(require("fastify-formbody"))
 
   .register(require("fastify-sensible"))
