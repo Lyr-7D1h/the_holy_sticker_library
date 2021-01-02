@@ -1,6 +1,7 @@
 const venom = require("venom-bot");
 const fs = require("fs");
 const fp = require("fastify-plugin");
+const { default: fastify } = require("fastify");
 
 const groupName = "Holy Sticker Library";
 
@@ -10,6 +11,7 @@ let venomInfo = {
   device: {},
   group: {},
   logged: false,
+  status: "pending", // pending, loggedin, loggedout
   onCreate: () =>
     new Promise((res) => {
       onCreateResolver = res;
@@ -20,8 +22,8 @@ let venomInfo = {
  * Setting up venom library to work with fastify
  */
 module.exports = fp(
-  async (instance) => {
-    instance.decorate("venom", {
+  async (fastify) => {
+    fastify.decorate("venom", {
       getter() {
         return venomInfo;
       },
@@ -38,13 +40,11 @@ module.exports = fp(
             if (group) {
               resolve([device, group]);
             } else {
-              console.log(device);
               client
                 .createGroup(groupName, [
                   `${device.me.user}@${device.me.server}`,
                 ])
                 .then((group) => {
-                  console.log("test");
                   resolve([device, group]);
                 })
                 .catch(reject);
@@ -55,8 +55,7 @@ module.exports = fp(
     };
 
     const handler = (client) => {
-      venomInfo.logged = true;
-
+      venomInfo.status = "loggedin";
       getInfo(client)
         .then(([device, group]) => {
           venomInfo.device = device;
@@ -78,7 +77,10 @@ module.exports = fp(
             writeQR(base64QR);
           },
           (status) => {
-            venomInfo.logged = status === "isLogged";
+            fastify.log.info(`Venom: Status is "${status}"`);
+            if (status === "notLogged") {
+              venomInfo.status = "loggedout";
+            }
           },
           {
             disableSpins: true,

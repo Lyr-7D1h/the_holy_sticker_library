@@ -4,7 +4,7 @@ module.exports = fp(
   async (instance) => {
     instance.venom.onCreate().then((client) => {
       setTimeout(() => {
-        console.log(instance.venom.group);
+        // console.log(instance.venom.group);
         client.sendText(instance.venom.group.id._serialized, "asdf");
       }, 500);
     });
