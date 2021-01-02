@@ -1,16 +1,14 @@
 const venom = require("venom-bot");
 const fs = require("fs");
 const fp = require("fastify-plugin");
-const { default: fastify } = require("fastify");
 
-const groupName = "Holy Sticker Library";
+const GROUP_NAME = "Holy Sticker Library";
 
 let onCreateResolver;
 
 let venomInfo = {
   device: {},
   group: {},
-  logged: false,
   status: "pending", // pending, loggedin, loggedout
   onCreate: () =>
     new Promise((res) => {
@@ -22,7 +20,7 @@ let venomInfo = {
  * Setting up venom library to work with fastify
  */
 module.exports = fp(
-  async (fastify) => {
+  (fastify, _, done) => {
     fastify.decorate("venom", {
       getter() {
         return venomInfo;
@@ -36,12 +34,12 @@ module.exports = fp(
       return new Promise((resolve, reject) => {
         Promise.all([client.getHostDevice(), client.getAllGroups()])
           .then(([device, groups]) => {
-            const group = groups.find((group) => group.name === groupName);
+            const group = groups.find((group) => group.name === GROUP_NAME);
             if (group) {
               resolve([device, group]);
             } else {
               client
-                .createGroup(groupName, [
+                .createGroup(GROUP_NAME, [
                   `${device.me.user}@${device.me.server}`,
                 ])
                 .then((group) => {
@@ -98,9 +96,10 @@ module.exports = fp(
 
         fs.writeFileSync("./resources/qr", buffer);
       };
+      done();
     };
 
     start();
   },
-  { name: "venom" }
+  { name: "venom", dependencies: ["db"] }
 );

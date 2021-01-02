@@ -24,6 +24,7 @@
     "puppeteer": "^5.5.0",
     "rxjs": "^6.6.3",
     "sqlite3": "^5.0.0",
+    "uuid": "^8.3.2",
     "venom-bot": "^2.2.3"
   },
   "devDependencies": {

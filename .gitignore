@@ -3,3 +3,5 @@ session
 node_modules
 resources/*
 .env
+stickers
+lib.db

@@ -1,5 +1,3 @@
-const assert = require("assert");
-const server = require("./helper");
 const helper = require("./helper");
 const message_listener = require("../plugins/message_listener");
 
