@@ -1,5 +1,6 @@
 const fastifyAutoload = require("fastify-autoload");
 const path = require("path");
+const process = require("process");
 
 /*
  * Server Setup
@@ -19,10 +20,10 @@ fastify
   .register(require("fastify-sensible"))
 
   .register(fastifyAutoload, {
-    dir: path.join(__dirname, "plugins"),
+    dir: path.join(path.resolve(), "plugins"),
   })
   .register(fastifyAutoload, {
-    dir: path.join(__dirname, "routes"),
+    dir: path.join(path.resolve(), "routes"),
   })
 
   .listen(5000, (err) => {

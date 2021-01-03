@@ -7,7 +7,7 @@ let venom = {
   status: "pending", // pending, loggedin, loggedout
   onCreate: () =>
     new Promise((res) => {
-      onCreateResolver = res;
+      res();
     }),
 };
 

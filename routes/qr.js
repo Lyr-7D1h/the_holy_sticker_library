@@ -7,7 +7,7 @@ const path = require("path");
 module.exports = async (fastify) => {
   fastify.get("/qr", async (_, res) => {
     if (fastify.venom.status === "loggedout") {
-      fs.readFile(path.join(__dirname, "../resources/qr"), (err, data) => {
+      fs.readFile(path.join(path.resolve(), "/resources/qr"), (err, data) => {
         if (err) {
           fastify.log.error(err);
           res.internalServerError();

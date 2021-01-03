@@ -1,6 +1,7 @@
 const venom = require("venom-bot");
 const fs = require("fs");
 const fp = require("fastify-plugin");
+const { Buffer } = require("buffer");
 
 const GROUP_NAME = "Holy Sticker Library";
 

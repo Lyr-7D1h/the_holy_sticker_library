@@ -1,29 +1,55 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# After tests are complete it will push to docker using buildx for multiple architecture images.
 
 name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm test
-    - run: npm run linter
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm test
+      - run: npm run linter
+
+  docker:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v1
+      - name: Setting Image Name
+        run: |
+          IMAGE_NAME=oddity:$(date +%s)
+          echo $IMAGE_NAME
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USER }}" --password-stdin
+      - name: Install Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          buildx-version: latest
+      - name: Build and push
+        run: |
+          docker buildx build --push \
+            --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:${GITHUB_SHA::8}" \
+            --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:latest" \
+            --platform linux/amd64,linux/arm/v7 .
