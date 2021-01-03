@@ -1,7 +1,8 @@
 const t = require("tap");
 
+const commandParser = require("../../src/venom_hooks/command_parser");
+
 const client = require("../venom_client.helper");
-const commandParser = require("../../venom_hooks/command_parser");
 const { buildFastify } = require("../fastify.helper");
 
 const TEST_ID = "1234@1234";
