@@ -5,3 +5,4 @@ resources/*
 .env
 stickers
 lib.db
+.nyc_output

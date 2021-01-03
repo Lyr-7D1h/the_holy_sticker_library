@@ -7,7 +7,7 @@
     "start": "npm run start:dev",
     "start:dev": "NODE_ENV=development nodemon -i session -i tokens -i resources index.js",
     "start:prod": "node index.js",
-    "test": "mocha"
+    "test": "tap test/**/*.test.js"
   },
   "keywords": [
     "bot",
@@ -28,8 +28,8 @@
     "venom-bot": "^2.2.3"
   },
   "devDependencies": {
-    "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
-    "pino-pretty": "^4.3.0"
+    "pino-pretty": "^4.3.0",
+    "tap": "^14.11.0"
   }
 }
