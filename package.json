@@ -2,11 +2,11 @@
   "name": "holy_sticker_library",
   "version": "1.0.0",
   "description": "A whatsapp bot for saving and sending stickers",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "npm run start:dev",
     "start:dev": "NODE_ENV=development nodemon -i session -i tokens -i resources index.js",
-    "start:prod": "node index.js",
+    "start:prod": "node .",
     "test": "tap test/**/*.test.js",
     "linter": "npx eslint --ext .js ."
   },

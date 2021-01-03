@@ -20,10 +20,10 @@ fastify
   .register(require("fastify-sensible"))
 
   .register(fastifyAutoload, {
-    dir: path.join(path.resolve(), "plugins"),
+    dir: path.join(path.resolve(), "src/plugins"),
   })
   .register(fastifyAutoload, {
-    dir: path.join(path.resolve(), "routes"),
+    dir: path.join(path.resolve(), "src/routes"),
   })
 
   .listen(5000, (err) => {

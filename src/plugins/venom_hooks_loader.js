@@ -2,7 +2,7 @@ const fp = require("fastify-plugin");
 const fs = require("fs");
 const path = require("path");
 
-const COMMANDS_DIRECTORY = path.join(path.resolve(), "/venom_hooks");
+const COMMANDS_DIRECTORY = path.join(path.resolve(), "src/venom_hooks");
 
 /**
  * Load all venom hooks when venom client has been created
