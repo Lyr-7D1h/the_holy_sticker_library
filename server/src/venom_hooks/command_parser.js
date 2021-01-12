@@ -1,10 +1,10 @@
-const query = require("./commands/query");
-const send = require("./commands/send");
+import query from "./commands/query";
+import send from "./commands/send";
 
 /**
  * Parse and validate incomming messages
  */
-module.exports = (fastify, client) => {
+export default (fastify, client) => {
   const parse = (message) => {
     const content = message.content.toLowerCase();
 

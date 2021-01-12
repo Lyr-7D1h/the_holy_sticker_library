@@ -3,18 +3,16 @@ FROM node:latest
 RUN apt-get update && \
     apt-get -y install chromium 
 
-RUN useradd -ms /bin/bash -r -G audio,video sticker
+# RUN useradd -ms /bin/bash -r -G audio,video sticker
 
-COPY . /home/sticker
+WORKDIR /usr/src/app
 
-USER sticker
-
-WORKDIR /home/sticker
+COPY . /home/src/app
 
 RUN npm install puppeteer
 
-RUN npm install
+RUN npm ci --production
 
-CMD npm start
+CMD npm run start:prod
 
 EXPOSE 5000

@@ -1,29 +1,42 @@
-const fastifyAutoload = require("fastify-autoload");
-const path = require("path");
-const process = require("process");
+import Fastify from "fastify";
+import fastifyAutoload from "fastify-autoload";
+import path from "path";
+import process from "process";
+import fastifyFormBody from "fastify-formbody";
+import fastifySensible from "fastify-sensible";
+import pino from "pino";
+import fastifyStatic from "fastify-static";
 
 /*
  * Server Setup
  */
 
-const fastify = require("fastify")({
-  logger: {
+const fastify = Fastify({
+  logger: pino({
     prettyPrint: process.env.NODE_ENV === "development",
     level: process.env.NODE_ENV === "development" ? "debug" : "info",
-  },
+  }),
   disableRequestLogging: true,
 });
 
 fastify
-  .register(require("fastify-formbody"))
+  .register(fastifyFormBody)
 
-  .register(require("fastify-sensible"))
+  .register(fastifySensible)
+
+  .register(fastifyStatic, {
+    root: path.join(__dirname, "../resources"),
+    prefix: "/resources",
+  })
 
   .register(fastifyAutoload, {
     dir: path.join(path.resolve(), "src/plugins"),
   })
   .register(fastifyAutoload, {
     dir: path.join(path.resolve(), "src/routes"),
+    options: {
+      prefix: "/api",
+    },
   })
 
   .listen(5000, (err) => {

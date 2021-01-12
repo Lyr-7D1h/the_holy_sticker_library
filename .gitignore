@@ -1,7 +1,8 @@
 tokens
 session
 node_modules
-resources/*
-.env
+server/resources/*
+.env*
 lib.db
 .nyc_output
+.eslintcache

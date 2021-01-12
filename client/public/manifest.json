@@ -1,0 +1,9 @@
+{
+  "short_name": "Holy Sticker Library",
+  "name": "The one and only Holy Sticker Library",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

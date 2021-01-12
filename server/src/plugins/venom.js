@@ -95,7 +95,7 @@ module.exports = fp(
         qrCode = qrCode.replace("data:image/png;base64,", "");
         const buffer = Buffer.from(qrCode, "base64");
 
-        fs.writeFileSync("./resources/qr", buffer);
+        fs.writeFileSync("./resources/qr.png", buffer);
       };
       done();
     };
