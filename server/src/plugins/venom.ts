@@ -31,9 +31,13 @@ function importVenomHooks(fastify: FastifyInstance) {
           imports.push(import(path.join(COMMANDS_DIRECTORY, file)));
         }
 
-        Promise.all(imports).then((imports) => {
-          imports.forEach((imp) => imp.default(fastify));
-        });
+        Promise.all(imports)
+          .then((imports) => {
+            imports.forEach((imp) => imp.default(fastify));
+          })
+          .catch((err) =>
+            fastify.log.error("Error importing venom file: ", err)
+          );
       });
     });
   });
@@ -48,6 +52,11 @@ function getInfo(client: Whatsapp) {
 function handleClient(client: Whatsapp, fastify: FastifyInstance) {
   venomInfo.status = "loggedin";
 
+  // close client when fastify closes
+  fastify.addHook("onClose", async () => {
+    await client.close();
+  });
+
   getInfo(client)
     .then(([device]) => {
       venomInfo.device = device;
@@ -55,7 +64,7 @@ function handleClient(client: Whatsapp, fastify: FastifyInstance) {
       importVenomHooks(fastify);
     })
     .catch((err) => {
-      throw err;
+      fastify.log.error(err);
     });
 }
 
@@ -86,6 +95,8 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
     {
       logQR: false,
       autoClose: 0,
+      disableWelcome: true,
+      logger: fastify.log,
     }
   )
     .then((client) => handleClient(client, fastify))
