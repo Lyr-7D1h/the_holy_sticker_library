@@ -96,7 +96,6 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
       logQR: false,
       autoClose: 0,
       disableWelcome: true,
-      logger: fastify.log,
     }
   )
     .then((client) => handleClient(client, fastify))
