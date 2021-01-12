@@ -35,9 +35,7 @@ function importVenomHooks(fastify: FastifyInstance) {
           .then((imports) => {
             imports.forEach((imp) => imp.default(fastify));
           })
-          .catch((err) =>
-            fastify.log.error("Error importing venom file: ", err)
-          );
+          .catch((err) => fastify.log.error(err));
       });
     });
   });
@@ -51,11 +49,7 @@ function getInfo(client: Whatsapp) {
 /** Populate venomInfo and call import */
 function handleClient(client: Whatsapp, fastify: FastifyInstance) {
   venomInfo.status = "loggedin";
-
-  // close client when fastify closes
-  fastify.addHook("onClose", async () => {
-    await client.close();
-  });
+  venomInfo.client = client;
 
   getInfo(client)
     .then(([device]) => {
@@ -80,6 +74,15 @@ function writeQR(qrCode: string) {
  */
 const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
   fastify.decorate("venom", venomInfo);
+
+  // close client when fastify closes
+  fastify.addHook("onClose", (_, done) => {
+    if (venomInfo.client) {
+      venomInfo.client.close();
+      console.log("close");
+    }
+    done();
+  });
 
   create(
     "main",

@@ -1,4 +1,4 @@
-const query = (fastify, client, keywords) => {
+const query = (fastify, keywords) => {
   console.log(keywords);
   // TODO: fetch stickers
 };

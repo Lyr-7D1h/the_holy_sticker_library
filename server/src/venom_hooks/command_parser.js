@@ -4,7 +4,7 @@ import send from "./commands/send";
 /**
  * Parse and validate incomming messages
  */
-export default (fastify, client) => {
+export default (fastify) => {
   const parse = (message) => {
     const content = message.content.toLowerCase();
 
@@ -17,11 +17,14 @@ export default (fastify, client) => {
     switch (content.charAt(0)) {
       case "q":
         if (args.length == 0) {
-          client.sendText(message.chat.contact.id, "No keywords given");
+          fastify.venom.client.sendText(
+            message.chat.contact.id,
+            "No keywords given"
+          );
           break;
         }
 
-        query(fastify, client, args);
+        query(fastify, args);
         break;
       case "s":
         send();
@@ -29,14 +32,15 @@ export default (fastify, client) => {
       case "l":
         break;
       default:
-        client.sendText(
-          fastify.venom.group.id._serialized,
-          "Command not recognized"
-        );
+      // TODO: send pm
+      // client.sendText(
+      //   fastify.venom.group.id._serialized,
+      //   "Command not recognized"
+      // );
     }
   };
 
-  client.onMessage((message) => {
+  fastify.venom.client.onMessage((message) => {
     // if (fastify.venom.device.id && fastify.venom.group.id) {
     //   if (message.isGroupMsg) {
     //     if (message.chat.contact.id === fastify.venom.group.id._serialized) {
