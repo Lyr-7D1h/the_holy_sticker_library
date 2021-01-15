@@ -9,7 +9,7 @@
     "start:dev": "NODE_ENV=development tsnd ./src",
     "start:prod": "node .",
     "test": "tap test/**/*.test.js",
-    "linter": "npx eslint --ext .js ."
+    "linter": "npx eslint --ext .ts ./src"
   },
   "keywords": [
     "bot",

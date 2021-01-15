@@ -17,6 +17,11 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react", "@typescript-eslint"],
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
   rules: {
     "no-unused-vars": ["error", { argsIgnorePattern: "_." }],
   },
