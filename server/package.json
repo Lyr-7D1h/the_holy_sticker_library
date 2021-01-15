@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "npm run start:dev",
-    "build": "rm -rf ./dist && tsc -p tsconfig.json",
+    "build": "rm -rf ./build && tsc -p tsconfig.json",
     "start:dev": "NODE_ENV=development tsnd ./src",
     "start:prod": "node .",
     "test": "tap test/**/*.test.js",
