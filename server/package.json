@@ -8,7 +8,7 @@
     "build": "rm -rf ./build && tsc -p tsconfig.json",
     "start:dev": "NODE_ENV=development tsnd ./src",
     "start:prod": "node .",
-    "test": "tap test/**/*.test.js",
+    "test": "tap test/**/*.test.ts",
     "linter": "npx eslint --ext .ts ./src"
   },
   "keywords": [
