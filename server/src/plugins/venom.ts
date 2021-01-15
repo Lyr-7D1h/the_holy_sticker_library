@@ -4,15 +4,28 @@ import fs from "fs";
 import path from "path";
 import { create, HostDevice, Whatsapp } from "venom-bot";
 
-interface venomInfo {
+interface VenomSetup {
   status: "pending" | "loggedin" | "loggedout";
   device?: HostDevice;
   client?: Whatsapp;
 }
 
+/** Only use property status if not a venom_hook */
+interface VenomPlugin extends VenomSetup {
+  device: HostDevice;
+  client: Whatsapp;
+}
+
+/** Declare VenomPlugin Interface for FastifyInstance */
+declare module "fastify" {
+  interface FastifyInstance {
+    venom: VenomPlugin;
+  }
+}
+
 const COMMANDS_DIRECTORY = path.join(__dirname, "../venom_hooks");
 
-const venomInfo: venomInfo = {
+const venomInfo: VenomSetup = {
   status: "pending",
 };
 
