@@ -4,7 +4,7 @@ import query from "./commands/query";
 import send from "./commands/send";
 
 const parse = (fastify: FastifyInstance, message: Message) => {
-  fastify.log.debug(`Parsing: ${message.content} by ${message.author}`);
+  fastify.log.debug(`Parsing: ${message.content} by ${message.from}`);
   const content = message.content.toLowerCase();
 
   const args = content

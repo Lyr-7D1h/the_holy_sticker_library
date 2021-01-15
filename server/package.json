@@ -2,7 +2,7 @@
   "name": "holy_sticker_library",
   "version": "1.0.0",
   "description": "A whatsapp bot for saving and sending stickers",
-  "main": "src/index.js",
+  "main": "build/index.js",
   "scripts": {
     "start": "npm run start:dev",
     "build": "rm -rf ./build && tsc -p tsconfig.json",

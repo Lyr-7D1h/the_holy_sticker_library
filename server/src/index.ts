@@ -30,10 +30,10 @@ fastify
   })
 
   .register(fastifyAutoload, {
-    dir: path.join(path.resolve(), "src/plugins"),
+    dir: path.join(__dirname, "./plugins"),
   })
   .register(fastifyAutoload, {
-    dir: path.join(path.resolve(), "src/routes"),
+    dir: path.join(__dirname, "./routes"),
     options: {
       prefix: "/api",
     },

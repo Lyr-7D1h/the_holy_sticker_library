@@ -62,11 +62,11 @@ function getInfo(client: Whatsapp) {
 /** Populate venomInfo and call import */
 function handleClient(client: Whatsapp, fastify: FastifyInstance) {
   venomInfo.status = "loggedin";
-  venomInfo.client = client;
 
   getInfo(client)
     .then(([device]) => {
       venomInfo.device = device;
+      venomInfo.client = client;
 
       importVenomHooks(fastify);
     })
@@ -90,9 +90,9 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
 
   // close client when fastify closes
   fastify.addHook("onClose", (_, done) => {
+    console.log("close");
     if (venomInfo.client) {
       venomInfo.client.close();
-      console.log("close");
     }
     done();
   });
