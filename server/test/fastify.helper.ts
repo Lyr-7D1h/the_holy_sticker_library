@@ -1,6 +1,6 @@
 import Fastify, { FastifyInstance } from "fastify";
 import fp from "fastify-plugin";
-import venom, { VenomTest } from "./venom_client.helper";
+import buildVenom, { VenomTest } from "./venom_client.helper";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -9,7 +9,7 @@ declare module "fastify" {
 }
 
 /**
- * Fastify instance with venomInfo
+ * Fastify instance with venom
  */
 export function buildFastify(
   // eslint-disable-next-line no-unused-vars
@@ -19,7 +19,7 @@ export function buildFastify(
 
   const venomPlugin = fp(
     async (fastify) => {
-      fastify.decorate("venom", venom);
+      fastify.decorate("venom", buildVenom());
     },
     {
       name: "venom",

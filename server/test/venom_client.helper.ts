@@ -1,26 +1,20 @@
-export interface TestMessage {
-  id: string;
-  content: string;
-  chat?: {
-    contact: {
-      id: string;
-    };
-  };
-}
+import { Message } from "venom-bot";
+import { getMessageMock } from "./mock/message.mock";
 
 export class VenomDeviceTest {}
 
-/*
- * MOCK FUNCTIONS
- */
 export class VenomClientTest {
-  sendTexts: TestMessage[] = [];
-  onMessageHandler = (_message: TestMessage): void => {
+  sentTexts: Message[] = [];
+  onMessageHandler = (_message: Message): void => {
     throw Error("No onMessageHandler set");
   };
 
+  /*
+   * MOCK FUNCTIONS
+   */
+
   /** Mock for onMessage */
-  onMessage(cb: (message: TestMessage) => void): void {
+  onMessage(cb: (message: Message) => void): void {
     this.onMessageHandler = cb;
   }
 
@@ -29,8 +23,8 @@ export class VenomClientTest {
    * Puts all messages in a queue.
    * You can retrieve these messages using @function sendTestMessage
    */
-  sendText(contactId: string, content: string): void {
-    this.sendTexts.push({ id: contactId, content });
+  sendText(to: string, content: string): void {
+    this.sentTexts.push(getMessageMock({ to, content }));
   }
 
   /*
@@ -39,30 +33,21 @@ export class VenomClientTest {
 
   /**
    * Send a test message as a given user
-   * @param {string} id Id of the message
-   * @param {string} text Content of the message
+   * @param p Partial message
    */
-  sendTestMessage(id: string, content: string): void {
-    this.onMessageHandler({
-      id: id,
-      chat: {
-        contact: {
-          id,
-        },
-      },
-      content,
-    });
+  sendTestMessage(p?: Partial<Message>): void {
+    this.onMessageHandler(getMessageMock(p));
   }
 
   /**
    * Receive latest message send by venom
    */
-  receiveLatestSendText(): TestMessage {
-    const msg = this.sendTexts.shift();
+  receiveLatestSendText(): Message {
+    const msg = this.sentTexts.shift();
     if (msg) {
       return msg;
     } else {
-      throw Error("No latest message");
+      throw new Error("No latest message");
     }
   }
 }
@@ -73,10 +58,10 @@ export interface VenomTest {
   device: VenomDeviceTest;
 }
 
-export default (): VenomTest => {
+export default function buildVenom(): VenomTest {
   return {
     client: new VenomClientTest(),
     device: new VenomDeviceTest(),
     status: "loggedin",
   };
-};
+}

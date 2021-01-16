@@ -44,10 +44,9 @@ jobs:
         run: npm run linter
         working-directory: client
 
-        # FIXME: Fix and add server tests
-      # - name: Test Server
-      # run: npm test
-      # working-directory: server
+      - name: Test Server
+        run: npm test
+        working-directory: server
 
       - name: Test Client
         run: npm test

@@ -4,7 +4,7 @@ import { Message } from "venom-bot";
 import tag from "./commands/tag";
 // import send from "./commands/send";
 
-const parse = (fastify: FastifyInstance, message: Message) => {
+function parse(fastify: FastifyInstance, message: Message): void {
   fastify.log.debug(`Parsing: ${message.content} by ${message.from}`);
   const content = message.body.toLowerCase();
 
@@ -15,7 +15,6 @@ const parse = (fastify: FastifyInstance, message: Message) => {
     .map((key) => key.trim())
     .filter((key) => key !== "");
 
-  console.log(args);
   switch (command) {
     case "q":
       if (args.length == 0) {
@@ -39,7 +38,7 @@ const parse = (fastify: FastifyInstance, message: Message) => {
     default:
       fastify.venom.client.sendText(message.from, "Command not recognized");
   }
-};
+}
 
 /**
  * Parse and validate incomming messages

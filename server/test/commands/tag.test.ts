@@ -4,8 +4,6 @@ import { buildFastify } from "../fastify.helper";
 import commandParser from "../../src/venom_hooks/command_parser";
 import { VenomClientTest } from "../venom_client.helper";
 
-const TEST_ID = "1234@1234";
-
 let client: VenomClientTest;
 t.beforeEach((done) => {
   buildFastify((err, fastify) => {
@@ -16,13 +14,15 @@ t.beforeEach((done) => {
   });
 });
 
-t.test("Query returns stickers with corresponding tags", (t) => {
+t.test("Recognizes tag command", (t) => {
   t.plan(1);
 
-  client.sendTestMessage(TEST_ID, "q test, asdf");
+  client.sendTestMessage({ body: "t" });
 
-  const latestMessage = client.receiveLatestSendText();
-
-  t.notEqual(latestMessage, "Command not recognized", "Recognizes message");
-  // TODO: test query functionality
+  //   client.receiveLatestSendText();
+  try {
+    client.receiveLatestSendText();
+  } catch (err) {
+    t.equal(err.message, "No latest message", "Recognizes message");
+  }
 });

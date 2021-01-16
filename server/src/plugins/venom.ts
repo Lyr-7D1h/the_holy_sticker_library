@@ -90,7 +90,7 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
 
   // close client when fastify closes
   fastify.addHook("onClose", (_, done) => {
-    console.log("close");
+    // TODO: tests if works
     if (venomInfo.client) {
       venomInfo.client.close();
     }
