@@ -2,7 +2,6 @@ import Fastify from "fastify";
 import fastifyAutoload from "fastify-autoload";
 import path from "path";
 import process from "process";
-import fastifyFormBody from "fastify-formbody";
 import fastifySensible from "fastify-sensible";
 import pino from "pino";
 import fastifyStatic from "fastify-static";
@@ -20,8 +19,6 @@ const fastify = Fastify({
 });
 
 fastify
-  .register(fastifyFormBody)
-
   .register(fastifySensible)
 
   .register(fastifyStatic, {
@@ -32,6 +29,7 @@ fastify
   .register(fastifyAutoload, {
     dir: path.join(__dirname, "./plugins"),
   })
+
   .register(fastifyAutoload, {
     dir: path.join(__dirname, "./routes"),
     options: {

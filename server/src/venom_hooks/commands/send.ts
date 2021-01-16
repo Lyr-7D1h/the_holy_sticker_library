@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+// import { FastifyInstance } from "fastify";
 
 // const send = (fastify: FastifyInstance, keywords: string[]) => {
 //   console.log(keywords);
