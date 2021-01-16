@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { Message } from "venom-bot";
-import query from "./commands/query";
+// import query from "./commands/query";
 import tag from "./commands/tag";
 // import send from "./commands/send";
 
@@ -26,7 +26,7 @@ const parse = (fastify: FastifyInstance, message: Message) => {
         break;
       }
 
-      query(fastify, args);
+      //   query(fastify, args);
       break;
     case "t" || "tag":
       tag(fastify, args);
