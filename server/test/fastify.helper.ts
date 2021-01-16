@@ -1,21 +1,19 @@
 import Fastify, { FastifyInstance } from "fastify";
 import fp from "fastify-plugin";
+import venom, { VenomTest } from "./venom_client.helper";
 
-const venom = {
-  device: {},
-  group: {},
-  status: "pending", // pending, loggedin, loggedout
-  onCreate: () =>
-    new Promise<void>((res) => {
-      res();
-    }),
-};
+declare module "fastify" {
+  interface FastifyInstance {
+    venom: VenomTest;
+  }
+}
 
 /**
  * Fastify instance with venomInfo
  */
 export function buildFastify(
-  cb: (_error: Error, _fastify: FastifyInstance) => void
+  // eslint-disable-next-line no-unused-vars
+  cb: (error: Error, fastify: FastifyInstance) => void
 ): void {
   const fastify = Fastify({ logger: true });
 
