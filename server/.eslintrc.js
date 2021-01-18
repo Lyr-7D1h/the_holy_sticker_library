@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   env: {
     browser: true,
@@ -12,6 +13,6 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   rules: {
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "_." }],
+    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "_." }],
   },
-};
+}

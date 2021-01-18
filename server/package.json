@@ -9,7 +9,7 @@
     "start:dev": "NODE_ENV=development tsnd --exit-child --rs --clear ./src",
     "start:prod": "node .",
     "test": "tap test/**/*.test.ts",
-    "linter": "npx eslint --ext .ts ./src"
+    "linter": "npx eslint --max-warnings 0 --ext .ts ./src"
   },
   "keywords": [
     "bot",
@@ -30,7 +30,8 @@
     "rxjs": "^6.6.3",
     "sqlite3": "^5.0.0",
     "uuid": "^8.3.2",
-    "venom-bot": "^2.2.3"
+    "venom-bot": "^2.2.3",
+    "ws": "^7.4.2"
   },
   "devDependencies": {
     "@types/node": "^14.14.20",

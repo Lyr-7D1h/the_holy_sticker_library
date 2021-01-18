@@ -1,8 +1,8 @@
 # the_holy_sticker_library
 
 A whatsapp bot for saving and sending stickers
-Using fastify to show the qr code in a web interface
-Using venom for receiving messages.
+Using **fastify** to show the qr code in a web interface
+Using **venom-bot** for receiving messages.
 
 # Requirements
 
