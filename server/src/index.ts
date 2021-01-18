@@ -5,6 +5,7 @@ import process from "process";
 import fastifySensible from "fastify-sensible";
 import pino from "pino";
 import fastifyStatic from "fastify-static";
+import fastifyWebsocket from "fastify-websocket";
 
 /*
  * Server Setup
@@ -20,6 +21,23 @@ const fastify = Fastify({
 
 fastify
   .register(fastifySensible)
+
+  .register(fastifyWebsocket, {
+    handle: (conn) => {
+      fastify.log.info("Connection made");
+      conn.pipe(conn);
+    },
+    options: {
+      maxPayload: 1048576, // we set the maximum allowed messages size to 1 MiB (1024 bytes * 1024 bytes)
+      path: "/ws",
+      verifyClient: function (info, next) {
+        if (info.req.headers["x-fastify-header"] !== "fastify is awesome !") {
+          return next(false); // the connection is not allowed
+        }
+        next(true); // the connection is allowed
+      },
+    },
+  })
 
   .register(fastifyStatic, {
     root: path.join(__dirname, "../resources"),

@@ -1,6 +1,6 @@
 import React from "react";
 
-function AuthPage() {
+const AuthPage: React.FC = () => {
   return (
     <div style={{ textAlign: "center" }} className="App">
       <div style={{ margin: "20px" }} id="status">
@@ -9,6 +9,6 @@ function AuthPage() {
       <img id="qr" alt="QR Code" src="/resources/qr.png" />
     </div>
   );
-}
+};
 
 export default AuthPage;
