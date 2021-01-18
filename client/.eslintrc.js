@@ -24,6 +24,8 @@ module.exports = {
   },
   rules: {
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "_." }],
+    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "_." }],
+    // Prevents from using the preferred component typing
+    "react/prop-types": "off",
   },
-};
+}
