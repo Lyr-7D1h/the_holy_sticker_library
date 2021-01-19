@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { SocketEvent } from "@shared/features/socket"
+import { SocketEvent } from "@shared/types/socket"
 
 const sock = new WebSocket("ws://localhost:3000/ws")
 

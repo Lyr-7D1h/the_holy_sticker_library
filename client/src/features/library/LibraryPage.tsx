@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux"
 import { useRootSelector } from "../../store"
 import Page from "../shared/Page"
 import { getStickers } from "./librarySlice"
-import { Sticker } from "@shared/features/library"
+import { Sticker } from "@shared/types/library"
 
 const LibraryPage: FC = () => {
   const [selected, setSelected] = useState("All")
