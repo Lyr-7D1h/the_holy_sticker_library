@@ -1,11 +1,13 @@
-import Fastify from "fastify"
 import fastifyAutoload from "fastify-autoload"
 import path from "path"
 import process from "process"
 import fastifySensible from "fastify-sensible"
 import pino from "pino"
 import fastifyStatic from "fastify-static"
-import fastifyWebsocket from "fastify-websocket"
+import Fastify from "fastify"
+
+const HOST = process.env.HOST || "0.0.0.0"
+const PORT = process.env.PORT || 5000
 
 /*
  * Server Setup
@@ -22,25 +24,6 @@ const fastify = Fastify({
 fastify
   .register(fastifySensible)
 
-  .register(fastifyWebsocket, {
-    handle: (conn) => {
-      fastify.log.info("Connection made")
-      conn.pipe(conn)
-    },
-    options: {
-      maxPayload: 1048576, // we set the maximum allowed messages size to 1 MiB (1024 bytes * 1024 bytes)
-      port: 5001,
-      path: "/ws",
-      verifyClient: function (info, next) {
-        fastify.log.info("Connection made")
-        if (info.req.headers["x-fastify-header"] !== "fastify is awesome !") {
-          return next(false) // the connection is not allowed
-        }
-        next(true) // the connection is allowed
-      },
-    },
-  })
-
   .register(fastifyStatic, {
     root: path.join(__dirname, "../resources"),
     prefix: "/resources",
@@ -51,15 +34,19 @@ fastify
   })
 
   .register(fastifyAutoload, {
+    dir: path.join(__dirname, "./socket_resources"),
+  })
+
+  .register(fastifyAutoload, {
     dir: path.join(__dirname, "./routes"),
     options: {
       prefix: "/api",
     },
   })
 
-  .listen(5000, (err) => {
+  .listen(PORT, HOST, (err) => {
     if (err) {
-      fastify.log.error(err)
+      fastify.log.error(err.message)
       process.exit(1)
     }
 

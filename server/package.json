@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run start:dev",
     "build": "rm -rf ./build && tsc -p tsconfig.json",
-    "start:dev": "NODE_ENV=development tsnd --exit-child --rs --clear ./src",
+    "start:dev": "NODE_ENV=development tsnd --exit-child --project ./tsconfig.dev.json --respawn --rs --clear ./src",
     "start:prod": "node .",
     "test": "tap test/**/*.test.ts",
     "linter": "npx eslint --max-warnings 0 --ext .ts ./src"
@@ -24,7 +24,6 @@
     "fastify-plugin": "^3.0.0",
     "fastify-sensible": "^3.1.0",
     "fastify-static": "^3.3.1",
-    "fastify-websocket": "^2.1.0",
     "pino": "^6.9.0",
     "puppeteer": "^5.5.0",
     "rxjs": "^6.6.3",
