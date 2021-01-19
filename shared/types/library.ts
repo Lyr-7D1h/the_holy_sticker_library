@@ -1,3 +1,4 @@
 export interface Sticker {
-  id: string
+  id: number
+  hash: string
 }
