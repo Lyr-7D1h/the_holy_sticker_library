@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyPluginCallback } from "fastify"
 import fp from "fastify-plugin"
 import fs from "fs"
-import path, { join } from "path"
+import { join } from "path"
 import { create, HostDevice, Whatsapp } from "venom-bot"
 
 interface VenomSetup {

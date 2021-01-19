@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals"
 import "fontsource-roboto"
 import { Provider } from "react-redux"
 import store from "./store"
-import Socket from "./features/util/Socket"
+import Socket from "./features/socket/Socket"
 
 ReactDOM.render(
   <Provider store={store}>

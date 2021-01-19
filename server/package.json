@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run start:dev",
     "build": "rm -rf ./build && tsc -p tsconfig.json",
+    "watch": "NODE_ENV=development tsc --watch -p ./tsconfig.dev.json ",
     "start:dev": "NODE_ENV=development tsnd --exit-child --project ./tsconfig.dev.json --respawn --rs --clear ./src",
     "start:prod": "node .",
     "test": "tap test/**/*.test.ts",

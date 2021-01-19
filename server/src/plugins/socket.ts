@@ -2,8 +2,12 @@ import { FastifyInstance, FastifyPluginCallback } from "fastify"
 import WebSocket, { Data } from "ws"
 import fp from "fastify-plugin"
 
-type Handler<DataType> = (data: DataType) => Promise<unknown>
-const handlers: Record<string, Handler<unknown>> = {}
+export type Handler<T, S> = (data: T) => Promise<S>
+
+export type EventData = Record<string, unknown> | unknown[]
+export type Event = { sender: string; receiver: string }
+
+const handlers: Record<string, Handler<EventData, EventData>> = {}
 
 function stringify(event: string, data: unknown) {
   return JSON.stringify({
@@ -20,7 +24,7 @@ function parseMessage(
   // TODO: check if fails
   const { event, data } = JSON.parse(rawData.toString())
 
-  const handler = handlers[event]
+  const handler = handlers[event.sender]
 
   if (handler) {
     handler(data)
@@ -42,7 +46,15 @@ function parseMessage(
   }
 }
 
-function addSocketHandler(event: string, handler: Handler<unknown>) {
+/**
+ * Add handler to handle an incomming event
+ * @param event Add a handler for the given event
+ * @param handler The handler
+ */
+function addSocketHandler(
+  event: string,
+  handler: Handler<EventData, EventData>
+) {
   handlers[event] = handler
 }
 
