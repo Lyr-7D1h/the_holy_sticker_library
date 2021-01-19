@@ -15,6 +15,7 @@ const LibraryPage: FC = () => {
   ]
 
   const stickers = useRootSelector<Sticker[]>((state) => state.library.stickers)
+  console.log(stickers)
 
   useEffect(() => {
     dispatch(getStickers({ limit: 100 }))

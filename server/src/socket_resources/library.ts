@@ -3,6 +3,7 @@ import { FastifyInstance, FastifyPluginCallback } from "fastify"
 const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
   fastify.addSocketHandler("library/getStickers", (data) => {
     if ("limit" in data) {
+      // TODO: check limit >100
       return new Promise((res, rej) => {
         fastify.db.all(
           "SELECT * FROM stickers LIMIT ?",
