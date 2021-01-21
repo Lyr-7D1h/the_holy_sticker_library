@@ -19,8 +19,9 @@ const dbPlugin: FastifyPluginCallback = (fastify, _, done) => {
       })
     })
 
+    db.run('CREATE TABLE IF NOT EXISTS stickers (hash TEXT UNIQUE NOT NULL)')
     db.run(
-      'CREATE TABLE IF NOT EXISTS stickers (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT UNIQUE NOT NULL)'
+      'CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY AUTOINCREMENT, tag TEXT NOT NULL, hash TEXT NOT NULL)'
     )
     fastify.decorate('db', db)
     done()
