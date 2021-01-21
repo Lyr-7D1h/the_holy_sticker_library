@@ -4,7 +4,12 @@
 #
 
 NAME="hsl"
-PROJECT_FOLDER="$HOME/p/holy_sticker_library"
+
+CURRENT_DIR=$(realpath `dirname "$0"`)
+PROJECT_FOLDER=`dirname $CURRENT_DIR`
+
+
+echo $PROJECT_FOLDER
 
 if ! command -v tmux &> /dev/null
 then
@@ -29,5 +34,5 @@ cd $PROJECT_FOLDER
 
 tmux new-session -d -s $NAME 'cd client && npm start' 
 tmux split-window -h "cd server && npm start"
-tmux split-window -v -t %0 -p 30 "cd server && npm run watch:shared"
+tmux split-window -v -t %0 -p 30 "npm run watch:shared"
 tmux a -d -t $NAME

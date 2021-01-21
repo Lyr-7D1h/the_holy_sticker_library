@@ -9,14 +9,23 @@ Using **venom-bot** for receiving messages.
 Node.js V10+\
 NPM V6+
 
-# Build
+# Commands
+
+## Sync Stickers
+
+When new stickers manually added add it to the db and hash all files in resources/stickers
 
 ```
-npm ci
-npm start
+npm run sync:stickers
 ```
 
-### Docker
+## Run linter on all files
+
+```
+npm run lint
+```
+
+# Docker
 
 ```
 docker build -t holystickerlibrary:latest .
