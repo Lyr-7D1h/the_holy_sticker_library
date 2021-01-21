@@ -6,6 +6,7 @@ import Page from '../shared/Page'
 import { getStickers } from './librarySlice'
 import { Sticker } from '@shared/types/library'
 import { fade, Grid, makeStyles } from '@material-ui/core'
+import LibraryImage from './LibraryImage'
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {
@@ -14,10 +15,6 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.8),
     },
-  },
-  image: {
-    width: '100%',
-    height: '100%',
   },
 }))
 
@@ -49,10 +46,7 @@ const LibraryPage: FC = () => {
             xs={12}
             spacing={3}
           >
-            <img
-              className={classes.image}
-              src={`/resources/stickers/${sticker.hash}.webp`}
-            />
+            <LibraryImage hash={sticker.hash} />
           </Grid>
         ))}
       </Grid>
