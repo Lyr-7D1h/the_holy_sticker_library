@@ -1,7 +1,7 @@
 tokens
 session
 node_modules
-server/resources/*
+resources/*
 .env*
 lib.db
 .nyc_output

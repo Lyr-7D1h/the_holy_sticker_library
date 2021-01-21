@@ -1,32 +1,21 @@
-// eslint-disable-next-line no-undef
+/* eslint-disable no-undef */
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-  },
-  extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-  ],
-  parser: "@typescript-eslint/parser",
+  extends: ['../.eslintrc.js', 'plugin:react/recommended'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 12,
-    sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ['react'],
   settings: {
     react: {
-      version: "detect",
+      version: 'detect',
     },
   },
   rules: {
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "_." }],
     // Prevents from using the preferred component typing
-    "react/prop-types": "off",
+    'react/prop-types': 'off',
+    // You don't have to import React with React 17+
+    'react/react-in-jsx-scope': 'off',
   },
 }

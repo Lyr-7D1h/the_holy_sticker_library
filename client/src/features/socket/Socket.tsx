@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import { SocketEvent } from "@shared/types/socket"
+import { FC, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { SocketEvent } from '@shared/types/socket'
 
-const sock = new WebSocket("ws://localhost:3000/ws")
+const sock = new WebSocket('ws://localhost:3000/ws')
 
 sock.onerror = (e) => {
   console.error(e)
@@ -31,9 +31,9 @@ const Socket: FC = ({ children }) => {
   })
 
   if (ready) {
-    return <>{children}</>
+    return <div>{children}</div>
   } else {
-    return <>No socket connection</>
+    return <div>No socket connection</div>
   }
 }
 

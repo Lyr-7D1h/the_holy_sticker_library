@@ -1,5 +1,6 @@
 {
-  "name": "holy_sticker_library",
+  "name": "server",
+  "private": true,
   "version": "1.0.0",
   "description": "A whatsapp bot for saving and sending stickers",
   "main": "build/index.js",

@@ -1,15 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { send } from "../socket/Socket"
+import { createSlice } from '@reduxjs/toolkit'
+import { send } from '../socket/Socket'
 
 const slice = createSlice({
-  name: "library",
+  name: 'library',
   initialState: {
     stickers: [],
   },
   reducers: {
-    getStickers(state, action) {
+    getStickers(_state, action) {
       send(
-        { sender: action.type, receiver: "library/updateStickers" },
+        { sender: action.type, receiver: 'library/updateStickers' },
         action.payload
       )
     },

@@ -1,12 +1,12 @@
-import fastifyAutoload from "fastify-autoload"
-import path from "path"
-import process from "process"
-import fastifySensible from "fastify-sensible"
-import pino from "pino"
-import fastifyStatic from "fastify-static"
-import Fastify from "fastify"
+import fastifyAutoload from 'fastify-autoload'
+import path from 'path'
+import process from 'process'
+import fastifySensible from 'fastify-sensible'
+import pino from 'pino'
+import fastifyStatic from 'fastify-static'
+import Fastify from 'fastify'
 
-const HOST = process.env.HOST || "0.0.0.0"
+const HOST = process.env.HOST || '0.0.0.0'
 const PORT = process.env.PORT || 5000
 
 /*
@@ -15,8 +15,8 @@ const PORT = process.env.PORT || 5000
 
 const fastify = Fastify({
   logger: pino({
-    prettyPrint: process.env.NODE_ENV === "development",
-    level: process.env.NODE_ENV === "development" ? "debug" : "info",
+    prettyPrint: process.env.NODE_ENV === 'development',
+    level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
   }),
   disableRequestLogging: true,
 })
@@ -25,22 +25,22 @@ fastify
   .register(fastifySensible)
 
   .register(fastifyStatic, {
-    root: path.join(__dirname, "../resources"),
-    prefix: "/resources",
+    root: path.join(__dirname, '../../resources'),
+    prefix: '/resources',
   })
 
   .register(fastifyAutoload, {
-    dir: path.join(__dirname, "./plugins"),
+    dir: path.join(__dirname, './plugins'),
   })
 
   .register(fastifyAutoload, {
-    dir: path.join(__dirname, "./socket_resources"),
+    dir: path.join(__dirname, './socket_resources'),
   })
 
   .register(fastifyAutoload, {
-    dir: path.join(__dirname, "./routes"),
+    dir: path.join(__dirname, './routes'),
     options: {
-      prefix: "/api",
+      prefix: '/api',
     },
   })
 
@@ -50,7 +50,7 @@ fastify
       process.exit(1)
     }
 
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === 'development') {
       console.log(fastify.printRoutes())
     }
   })

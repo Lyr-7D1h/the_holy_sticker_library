@@ -1,18 +1,18 @@
-import { FastifyPluginCallback } from "fastify"
-import fp from "fastify-plugin"
-import sqlite3 from "sqlite3"
+import { FastifyPluginCallback } from 'fastify'
+import fp from 'fastify-plugin'
+import sqlite3 from 'sqlite3'
 
-declare module "fastify" {
+declare module 'fastify' {
   interface FastifyInstance {
     db: sqlite3.Database
   }
 }
 
 const dbPlugin: FastifyPluginCallback = (fastify, _, done) => {
-  const db = new sqlite3.Database("lib.db")
+  const db = new sqlite3.Database('lib.db')
 
   db.serialize(() => {
-    fastify.addHook("onClose", (fastify, done) => {
+    fastify.addHook('onClose', (fastify, done) => {
       db.close((err) => {
         if (err) fastify.log.error(err.message)
         done()
@@ -20,11 +20,11 @@ const dbPlugin: FastifyPluginCallback = (fastify, _, done) => {
     })
 
     db.run(
-      "CREATE TABLE IF NOT EXISTS stickers (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT UNIQUE NOT NULL)"
+      'CREATE TABLE IF NOT EXISTS stickers (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT UNIQUE NOT NULL)'
     )
-    fastify.decorate("db", db)
+    fastify.decorate('db', db)
     done()
   })
 }
 
-export default fp(dbPlugin, { name: "db" })
+export default fp(dbPlugin, { name: 'db' })

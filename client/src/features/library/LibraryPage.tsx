@@ -1,33 +1,33 @@
-import { LibraryBooks, SpeakerNotesOff } from "@material-ui/icons"
-import React, { FC, useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import { useRootSelector } from "../../store"
-import Page from "../shared/Page"
-import { getStickers } from "./librarySlice"
-import { Sticker } from "@shared/types/library"
-import { fade, Grid, makeStyles } from "@material-ui/core"
+import { LibraryBooks, SpeakerNotesOff } from '@material-ui/icons'
+import { FC, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useRootSelector } from '../../store'
+import Page from '../shared/Page'
+import { getStickers } from './librarySlice'
+import { Sticker } from '@shared/types/library'
+import { fade, Grid, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {
     zIndex: 500,
     // TODO: fix hover
-    "&:hover": {
+    '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.8),
     },
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
 }))
 
 const LibraryPage: FC = () => {
-  const [selected, setSelected] = useState("All")
+  const [selected, setSelected] = useState('All')
   const classes = useStyles()
   const dispatch = useDispatch()
   const drawerItems = [
-    { title: "All", icon: <LibraryBooks /> },
-    { title: "Untagged", icon: <SpeakerNotesOff /> },
+    { title: 'All', icon: <LibraryBooks /> },
+    { title: 'Untagged', icon: <SpeakerNotesOff /> },
   ]
 
   const stickers = useRootSelector<Sticker[]>((state) => state.library.stickers)
