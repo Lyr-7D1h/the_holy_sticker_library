@@ -1,12 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit"
-import { useSelector } from "react-redux"
-import librarySlice from "./features/library/librarySlice"
-import SocketSlice from "./features/socket/SocketSlice"
+import { configureStore } from '@reduxjs/toolkit'
+import { useSelector } from 'react-redux'
+import librarySlice from './features/library/librarySlice'
+import socketReducer from './features/socket/socketSlice'
 
 const store = configureStore({
   reducer: {
     library: librarySlice,
-    socket: SocketSlice,
+    socket: socketReducer,
   },
 })
 

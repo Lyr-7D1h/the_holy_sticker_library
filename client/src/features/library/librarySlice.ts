@@ -9,9 +9,9 @@ const slice = createSlice({
     tags: [],
   },
   reducers: {
-    getTags(_, action: PayloadAction<{ limit: number }>) {
-      const le = new GetStickersEvent(action.payload)
-      send(le)
+    getTags(_, _action: PayloadAction) {
+      //   const le = new GetStickersEvent(action.payload)
+      //   send(le)
     },
     updateTags(state, action) {
       state.tags = action.payload
