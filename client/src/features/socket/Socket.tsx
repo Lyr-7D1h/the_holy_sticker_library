@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { SocketEvent } from '@shared/types/socket'
+import { SocketEvent } from '@shared/socket'
 
 const sock = new WebSocket('ws://localhost:3000/ws')
 
@@ -8,8 +8,8 @@ sock.onerror = (e) => {
   console.error(e)
 }
 
-export function send(event: SocketEvent, data: Record<string, unknown>): void {
-  sock.send(JSON.stringify({ event, data }))
+export function send(event: SocketEvent): void {
+  sock.send(event.stringify())
 }
 
 /**
@@ -25,8 +25,8 @@ const Socket: FC = ({ children }) => {
     }
 
     sock.onmessage = (e) => {
-      const { event, data } = JSON.parse(e.data)
-      dispatch({ type: event.receiver, payload: data })
+      const event: SocketEvent = JSON.parse(e.data)
+      dispatch(event)
     }
   })
 

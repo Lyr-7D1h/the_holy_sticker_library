@@ -1,17 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { GetStickersEvent } from '@shared/socket'
 import { send } from '../socket/Socket'
 
 const slice = createSlice({
   name: 'library',
   initialState: {
     stickers: [],
+    tags: [],
   },
   reducers: {
+    getTags(_, action: PayloadAction<{ limit: number }>) {
+      const le = new GetStickersEvent(action.payload)
+      send(le)
+    },
+    updateTags(state, action) {
+      state.tags = action.payload
+    },
     getStickers(_state, action) {
-      send(
-        { sender: action.type, receiver: 'library/updateStickers' },
-        action.payload
-      )
+      send(new GetStickersEvent(action.payload))
     },
     updateStickers(state, action) {
       state.stickers = action.payload
@@ -19,6 +25,6 @@ const slice = createSlice({
   },
 })
 
-export const { getStickers } = slice.actions
+export const { getStickers, getTags } = slice.actions
 
 export default slice.reducer

@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useRootSelector } from '../../store'
 import Page from '../shared/Page'
-import { getStickers } from './librarySlice'
+import { getStickers, getTags } from './librarySlice'
 import { Sticker } from '@shared/types/library'
 import { fade, Grid, makeStyles } from '@material-ui/core'
 import LibraryImage from './LibraryImage'
@@ -32,6 +32,7 @@ const LibraryPage: FC = () => {
 
   useEffect(() => {
     dispatch(getStickers({ limit: 100 }))
+    dispatch(getTags())
   }, [selected])
 
   return (

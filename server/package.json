@@ -8,8 +8,8 @@
     "start": "npm run start:dev",
     "build": "rm -rf ./build && tsc -p tsconfig.json",
     "watch:dev": "NODE_ENV=development tsc --watch -p ./tsconfig.dev.json ",
-    "watch:shared": "tsc -b --clean ../shared && tsc -b --watch ../shared",
-    "start:dev": "NODE_ENV=development tsnd --exit-child --project ./tsconfig.dev.json --respawn --rs --clear ./src",
+    "watch:shared": "tsc -b --clean ../shared ; tsc -b --watch ../shared",
+    "start:dev": "NODE_ENV=development tsnd --exit-child --project ./tsconfig.dev.json --respawn --rs --clear ./src ",
     "start:prod": "node .",
     "test": "tap test/**/*.test.ts",
     "linter": "npx eslint --max-warnings 0 --ext .ts ./src"
@@ -18,6 +18,9 @@
     "bot",
     "whatsapp"
   ],
+  "_moduleAliases": {
+    "@shared": "../shared/build"
+  },
   "author": "Lyr",
   "license": "ISC",
   "dependencies": {
@@ -27,6 +30,7 @@
     "fastify-plugin": "^3.0.0",
     "fastify-sensible": "^3.1.0",
     "fastify-static": "^3.3.1",
+    "module-alias": "^2.2.2",
     "pino": "^6.9.0",
     "puppeteer": "^5.5.0",
     "rxjs": "^6.6.3",
@@ -47,7 +51,6 @@
     "pino-pretty": "^4.3.0",
     "prettier": "^2.2.1",
     "tap": "^14.11.0",
-    "ts-node-dev": "^1.1.1",
-    "typescript": "^4.1.3"
+    "ts-node-dev": "^1.1.1"
   }
 }

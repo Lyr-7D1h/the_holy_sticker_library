@@ -1,48 +1,45 @@
-import { FastifyInstance, FastifyPluginCallback } from "fastify"
-import WebSocket, { Data } from "ws"
-import fp from "fastify-plugin"
+import { FastifyInstance, FastifyPluginCallback } from 'fastify'
+import WebSocket, { Data } from 'ws'
+import fp from 'fastify-plugin'
+import {
+  SocketErrorEvent,
+  SocketEvent,
+  SocketNotFoundEvent,
+  SocketParsingError,
+} from '@shared/socket'
 
-export type Handler<T, S> = (data: T) => Promise<S>
-
-export type EventData = Record<string, unknown> | unknown[]
-export type Event = { sender: string; receiver: string }
-
-const handlers: Record<string, Handler<EventData, EventData>> = {}
-
-function stringify(event: string, data: unknown) {
-  return JSON.stringify({
-    event,
-    data,
-  })
+interface Handler {
+  <S extends SocketEvent>(event: S): Promise<SocketEvent>
 }
+
+const handlers: Record<string, Handler> = {}
 
 function parseMessage(
   fastify: FastifyInstance,
   connection: WebSocket,
   rawData: Data
 ) {
-  // TODO: check if fails
-  const { event, data } = JSON.parse(rawData.toString())
+  let event: SocketEvent
+  try {
+    event = SocketEvent.parse(rawData.toString())
+  } catch (e) {
+    connection.send(new SocketParsingError(e))
+    return
+  }
 
-  const handler = handlers[event.sender]
+  const handler = handlers[event.type]
 
   if (handler) {
-    handler(data)
-      .then((result) => {
-        connection.send(stringify(event, result))
+    handler(event)
+      .then((res) => {
+        connection.send(res.stringify())
       })
       .catch((error) => {
-        if (!error) {
-          error = "Something went wrong"
-        } else if (error.message) {
-          error = error.message
-        }
-
-        connection.send(stringify("socket/error", { error }))
+        connection.send(new SocketErrorEvent(error.message).stringify())
       })
   } else {
     fastify.log.warn(`Did not find resource: ${event}`)
-    connection.send(stringify("socket/notFound", { event }))
+    connection.send(new SocketNotFoundEvent().stringify())
   }
 }
 
@@ -51,14 +48,11 @@ function parseMessage(
  * @param event Add a handler for the given event
  * @param handler The handler
  */
-function addSocketHandler(
-  event: string,
-  handler: Handler<EventData, EventData>
-) {
+function addSocketHandler(event: string, handler: Handler) {
   handlers[event] = handler
 }
 
-declare module "fastify" {
+declare module 'fastify' {
   interface FastifyInstance {
     addSocketHandler: typeof addSocketHandler
   }
@@ -68,7 +62,7 @@ declare module "fastify" {
 const socketPlugin: FastifyPluginCallback = (fastify, _, done) => {
   const ws = new WebSocket.Server({
     server: fastify.server,
-    path: "/ws",
+    path: '/ws',
     maxPayload: 1048576,
     verifyClient: (_info, next) => {
       // TODO: validate connection
@@ -76,18 +70,18 @@ const socketPlugin: FastifyPluginCallback = (fastify, _, done) => {
     },
   })
 
-  ws.on("connection", (conn) => {
+  ws.on('connection', (conn) => {
     fastify.log.debug(`New connection`)
     conn.onmessage = (e) => {
       parseMessage(fastify, conn, e.data)
     }
   })
 
-  fastify.decorate("addSocketHandler", addSocketHandler)
+  fastify.decorate('addSocketHandler', addSocketHandler)
 
   done()
 }
 
 export default fp(socketPlugin, {
-  name: "socket",
+  name: 'socket',
 })

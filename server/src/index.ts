@@ -1,3 +1,4 @@
+import 'module-alias/register'
 import fastifyAutoload from 'fastify-autoload'
 import path from 'path'
 import process from 'process'

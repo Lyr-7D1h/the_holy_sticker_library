@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    // "rootDir": ".",
+    "outDir": "build",
     "target": "es2020",
     "module": "CommonJS",
     "moduleResolution": "node",
@@ -9,6 +11,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+
+    "allowJs": false,
 
     /* Strict Type-Checking Options */
     "alwaysStrict": true,
@@ -33,6 +37,7 @@
     "allowUnusedLabels": false,
     "forceConsistentCasingInFileNames": true,
 
+    "baseUrl": ".",
     "paths": {
       "@shared/*": ["./shared/*"]
     }
