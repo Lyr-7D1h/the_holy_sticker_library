@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { useSelector } from 'react-redux'
+import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import librarySlice from './features/library/librarySlice'
 import socketReducer from './features/socket/socketSlice'
 
@@ -10,11 +10,8 @@ const store = configureStore({
   },
 })
 
-type RootState = ReturnType<typeof store.getState>
-export function useRootSelector<TSelected = unknown>(
-  selector: (state: RootState) => TSelected
-): TSelected {
-  return useSelector<RootState, TSelected>(selector)
-}
+export type RootState = ReturnType<typeof store.getState>
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export default store

@@ -1,6 +1,7 @@
 import { Card, Chip, makeStyles, Modal, Typography } from '@material-ui/core'
 import { FC, useState } from 'react'
-import AutoInput from '../shared/AutoInput'
+import { useAppSelector } from 'store'
+import AutoInput, { AutoInputOption } from '../shared/AutoInput'
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -21,6 +22,13 @@ const useStyles = makeStyles((theme) => ({
 
 const LibraryImage: FC<{ hash: string }> = ({ hash }) => {
   const [open, setOpen] = useState(false)
+  const options: AutoInputOption[] = useAppSelector((s) => s.library.tags).map(
+    (t) => ({
+      id: t.id,
+      label: t.tag,
+    })
+  )
+
   const classes = useStyles()
 
   function handleNewTag(tag: string) {
@@ -50,7 +58,7 @@ const LibraryImage: FC<{ hash: string }> = ({ hash }) => {
               src={`/resources/stickers/${hash}.webp`}
             />
           </div>
-          <AutoInput onEnter={handleNewTag} options={[]} />
+          <AutoInput onEnter={handleNewTag} options={options} />
         </Card>
       </Modal>
     </>

@@ -1,10 +1,9 @@
 import { LibraryBooks, SpeakerNotesOff } from '@material-ui/icons'
 import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useRootSelector } from '../../store'
+import { useAppSelector } from '../../store'
 import Page from '../shared/Page'
 import { getStickers, getTags } from './librarySlice'
-import { Sticker } from '@shared/types/library'
 import { fade, Grid, makeStyles } from '@material-ui/core'
 import LibraryImage from './LibraryImage'
 
@@ -27,7 +26,7 @@ const LibraryPage: FC = () => {
     { title: 'Untagged', icon: <SpeakerNotesOff /> },
   ]
 
-  const stickers = useRootSelector<Sticker[]>((state) => state.library.stickers)
+  const stickers = useAppSelector((state) => state.library.stickers)
   console.log(stickers)
 
   useEffect(() => {

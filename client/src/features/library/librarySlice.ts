@@ -1,23 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { GetStickersEvent } from '@shared/socket'
+import { GetStickersRequest, Sticker } from '@shared/sticker'
 import { send } from '../socket/Socket'
+import { AddTagRequest, GetTagsRequest, Tag, TagCreate } from '@shared/tag'
 
 const slice = createSlice({
   name: 'library',
   initialState: {
-    stickers: [],
-    tags: [],
+    stickers: [] as Sticker[],
+    tags: [] as Tag[],
   },
   reducers: {
-    getTags(_, _action: PayloadAction) {
-      //   const le = new GetStickersEvent(action.payload)
-      //   send(le)
+    addTagResponse(state, action: PayloadAction<Tag>) {
+      state.tags.push(action.payload)
     },
-    updateTags(state, action) {
+    addTag(_state, action: PayloadAction<TagCreate>) {
+      send(new AddTagRequest(action.payload))
+    },
+
+    getTags() {
+      send(new GetTagsRequest())
+    },
+    getTagsResponse(state, action: PayloadAction<Tag[]>) {
       state.tags = action.payload
     },
+
     getStickers(_state, action) {
-      send(new GetStickersEvent(action.payload))
+      send(new GetStickersRequest(action.payload))
     },
     updateStickers(state, action) {
       state.stickers = action.payload
@@ -25,6 +33,6 @@ const slice = createSlice({
   },
 })
 
-export const { getStickers, getTags } = slice.actions
+export const { getStickers, addTag, getTags } = slice.actions
 
 export default slice.reducer

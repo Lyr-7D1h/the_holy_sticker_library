@@ -18,13 +18,13 @@ const useStyles = makeStyles({
   },
 })
 
-interface Option {
+export interface AutoInputOption {
   id: number
   label: string
 }
 
-interface AutoInputProps {
-  options: Option[]
+export interface AutoInputProps {
+  options: AutoInputOption[]
   onEnter?: (value: string) => void
 }
 
@@ -45,8 +45,8 @@ const AutoInput: FC<AutoInputProps> = ({ options, onEnter }) => {
         option: classes.option,
       }}
       autoHighlight
-      getOptionLabel={(option: Option) => option.label}
-      renderOption={(option: Option) => (
+      getOptionLabel={(option: AutoInputOption) => option.label}
+      renderOption={(option: AutoInputOption) => (
         <React.Fragment>{option.label}</React.Fragment>
       )}
       renderInput={(

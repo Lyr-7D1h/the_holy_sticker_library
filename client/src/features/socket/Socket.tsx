@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { SocketEvent } from '@shared/socket'
+import { SocketEvent, SocketParsingError } from '@shared/socket'
 
 const sock = new WebSocket('ws://localhost:3000/ws')
 
@@ -13,7 +13,7 @@ export function send(event: SocketEvent): void {
 }
 
 /**
- * Wrap app in socket and render only when socket is ready
+ * Wrap app in Socket and render only when socket is ready
  */
 const Socket: FC = ({ children }) => {
   const dispatch = useDispatch()
@@ -25,8 +25,14 @@ const Socket: FC = ({ children }) => {
     }
 
     sock.onmessage = (e) => {
-      const event: SocketEvent = JSON.parse(e.data)
-      dispatch(event)
+      let event
+      try {
+        event = SocketEvent.parse(e.data)
+      } catch (e) {
+        event = new SocketParsingError('Client: could not parse', e)
+      }
+      console.log(event)
+      dispatch({ type: event.type, payload: event.payload })
     }
   })
 

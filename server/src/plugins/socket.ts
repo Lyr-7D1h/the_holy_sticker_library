@@ -1,10 +1,10 @@
 import { FastifyInstance, FastifyPluginCallback } from 'fastify'
-import WebSocket, { Data } from 'ws'
+import WebSocket from 'ws'
 import fp from 'fastify-plugin'
 import {
-  SocketErrorEvent,
+  SocketError,
   SocketEvent,
-  SocketNotFoundEvent,
+  SocketNotFound,
   SocketParsingError,
 } from '@shared/socket'
 
@@ -14,19 +14,11 @@ interface Handler {
 
 const handlers: Record<string, Handler> = {}
 
-function parseMessage(
+function handleEvent(
   fastify: FastifyInstance,
   connection: WebSocket,
-  rawData: Data
+  event: SocketEvent
 ) {
-  let event: SocketEvent
-  try {
-    event = SocketEvent.parse(rawData.toString())
-  } catch (e) {
-    connection.send(new SocketParsingError(e))
-    return
-  }
-
   const handler = handlers[event.type]
 
   if (handler) {
@@ -34,27 +26,20 @@ function parseMessage(
       .then((res) => {
         connection.send(res.stringify())
       })
-      .catch((error) => {
-        connection.send(new SocketErrorEvent(error.message).stringify())
+      .catch((e) => {
+        connection.send(
+          new SocketError('Could not send response', e).stringify()
+        )
       })
   } else {
     fastify.log.warn(`Did not find resource: ${event}`)
-    connection.send(new SocketNotFoundEvent().stringify())
+    connection.send(new SocketNotFound().stringify())
   }
-}
-
-/**
- * Add handler to handle an incomming event
- * @param event Add a handler for the given event
- * @param handler The handler
- */
-function addSocketHandler(event: string, handler: Handler) {
-  handlers[event] = handler
 }
 
 declare module 'fastify' {
   interface FastifyInstance {
-    addSocketHandler: typeof addSocketHandler
+    addSocketHandler: (type: string, handler: Handler) => void
   }
 }
 
@@ -73,9 +58,29 @@ const socketPlugin: FastifyPluginCallback = (fastify, _, done) => {
   ws.on('connection', (conn) => {
     fastify.log.debug(`New connection`)
     conn.onmessage = (e) => {
-      parseMessage(fastify, conn, e.data)
+      let event
+      try {
+        event = SocketEvent.parse(e.data.toString())
+      } catch (e) {
+        conn.send(new SocketParsingError('Server: could not parse', e))
+        return
+      }
+      handleEvent(fastify, conn, event)
     }
   })
+
+  /**
+   * Add handler to handle an incomming event
+   * @param type Add a handler for the given event
+   * @param handler The handler
+   */
+  function addSocketHandler(type: string, handler: Handler) {
+    if (type in handlers) {
+      fastify.log.warn(`Type: '${type}' already has an handler`)
+    } else {
+      handlers[type] = handler
+    }
+  }
 
   fastify.decorate('addSocketHandler', addSocketHandler)
 
