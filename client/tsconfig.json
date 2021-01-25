@@ -1,15 +1,22 @@
 {
   "extends": "./tsconfig.paths.json",
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "noUnusedLocals": false,
     "jsx": "react-jsx",
     "allowJs": false,
     "module": "esnext",
     "isolatedModules": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "noEmit": true
   },
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "references": [
     {
       "path": "../shared"

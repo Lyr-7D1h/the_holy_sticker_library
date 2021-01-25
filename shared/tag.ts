@@ -22,7 +22,6 @@ export class GetTagsRequest extends SocketEvent {
 
 export class GetTagsResponse extends SocketEvent {
   static type = 'library/getTagsResponse'
-  payload: Tag[] = []
   constructor(payload: Tag[]) {
     super(GetTagsResponse.type, payload)
   }

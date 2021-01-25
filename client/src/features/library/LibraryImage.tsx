@@ -1,12 +1,17 @@
 import { Card, Chip, makeStyles, Modal, Typography } from '@material-ui/core'
 import { FC, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useAppSelector } from 'store'
 import AutoInput, { AutoInputOption } from '../shared/AutoInput'
+import { addTag } from './librarySlice'
 
 const useStyles = makeStyles((theme) => ({
   image: {
     width: '100%',
     height: '100%',
+  },
+  tags: {
+    overflow: 'auto',
   },
   modal: {
     display: 'flex',
@@ -22,17 +27,26 @@ const useStyles = makeStyles((theme) => ({
 
 const LibraryImage: FC<{ hash: string }> = ({ hash }) => {
   const [open, setOpen] = useState(false)
-  const options: AutoInputOption[] = useAppSelector((s) => s.library.tags).map(
-    (t) => ({
-      id: t.id,
-      label: t.tag,
-    })
-  )
+  const [error, setError] = useState<string>()
+  const dispatch = useDispatch()
+  const tags = useAppSelector((s) => s.library.tags)
+  const options: AutoInputOption[] = tags.map((t) => ({
+    id: t.id,
+    label: t.tag,
+  }))
+  const stickerTags = tags.filter((s) => s.hash === hash)
 
   const classes = useStyles()
 
   function handleNewTag(tag: string) {
-    console.log(tag)
+    if (stickerTags.some((s) => s.tag === tag)) {
+      setError('Tag already on sticker')
+    } else if (tag.length < 3) {
+      setError('Tag too short (<3)')
+    } else {
+      if (error) setError(undefined)
+      dispatch(addTag({ hash, tag }))
+    }
   }
 
   return (
@@ -49,16 +63,19 @@ const LibraryImage: FC<{ hash: string }> = ({ hash }) => {
       >
         <Card className={classes.card}>
           <Typography variant="h5">{hash}</Typography>
-          <div>
-            <Chip label="asdf" />
+          <div className={classes.tags}>
+            {stickerTags.map((s) => (
+              <Chip key={`${s.id}_${s.tag}_${s.hash}`} label={s.tag} />
+            ))}
           </div>
           <div>
             <img
+              style={{ padding: '10px' }}
               onClick={() => setOpen(true)}
               src={`/resources/stickers/${hash}.webp`}
             />
           </div>
-          <AutoInput onEnter={handleNewTag} options={options} />
+          <AutoInput onEnter={handleNewTag} options={options} error={error} />
         </Card>
       </Modal>
     </>

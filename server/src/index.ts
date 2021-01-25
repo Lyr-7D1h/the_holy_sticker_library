@@ -33,16 +33,10 @@ fastify
   .register(fastifyAutoload, {
     dir: path.join(__dirname, './plugins'),
   })
-
-  .register(fastifyAutoload, {
-    dir: path.join(__dirname, './socket_resources'),
-  })
-
-  .register(fastifyAutoload, {
-    dir: path.join(__dirname, './routes'),
-    options: {
-      prefix: '/api',
-    },
+  .after(() => {
+    fastify.register(fastifyAutoload, {
+      dir: path.join(__dirname, './resources'),
+    })
   })
 
   .listen(PORT, HOST, (err) => {

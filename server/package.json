@@ -9,7 +9,7 @@
     "build": "rm -rf ./build && tsc -p tsconfig.json",
     "watch:dev": "NODE_ENV=development tsc --watch -p ./tsconfig.dev.json ",
     "watch:shared": "tsc -b --clean ../shared ; tsc -b --watch ../shared",
-    "start:dev": "NODE_ENV=development tsnd --exit-child --project ./tsconfig.dev.json --respawn --rs --clear ./src ",
+    "start:dev": "NODE_ENV=development tsnd --project ./tsconfig.dev.json --respawn --exit-child --rs --clear ./src ",
     "start:prod": "node .",
     "test": "tap test/**/*.test.ts",
     "linter": "npx eslint --max-warnings 0 --ext .ts ./src"

@@ -1,5 +1,7 @@
 {
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "strictPropertyInitialization": false,
     "declaration": true,
     "declarationMap": true,
     "composite": true,

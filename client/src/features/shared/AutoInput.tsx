@@ -25,16 +25,17 @@ export interface AutoInputOption {
 
 export interface AutoInputProps {
   options: AutoInputOption[]
+  error?: string
   onEnter?: (value: string) => void
 }
 
-const AutoInput: FC<AutoInputProps> = ({ options, onEnter }) => {
+const AutoInput: FC<AutoInputProps> = ({ options, error, onEnter }) => {
   const [value, setValue] = useState('')
   const classes = useStyles()
 
   const handleOnEnter: KeyboardEventHandler = (e) => {
     if (e.key === 'Enter') {
-      if (onEnter) onEnter(value)
+      if (value && onEnter) onEnter(value)
     }
   }
 
@@ -45,10 +46,19 @@ const AutoInput: FC<AutoInputProps> = ({ options, onEnter }) => {
         option: classes.option,
       }}
       autoHighlight
-      getOptionLabel={(option: AutoInputOption) => option.label}
-      renderOption={(option: AutoInputOption) => (
-        <React.Fragment>{option.label}</React.Fragment>
-      )}
+      freeSolo
+      onChange={(_, v) => {
+        if (v) setValue(typeof v === 'string' ? v : v.label)
+      }}
+      getOptionLabel={(option) => {
+        console.log(option)
+        if (typeof option === 'string') {
+          return option
+        } else {
+          return option.label
+        }
+      }}
+      renderOption={(option) => <React.Fragment>{option.label}</React.Fragment>}
       renderInput={(
         params:
           | (JSX.IntrinsicAttributes & StandardTextFieldProps)
@@ -57,7 +67,8 @@ const AutoInput: FC<AutoInputProps> = ({ options, onEnter }) => {
       ) => (
         <TextField
           {...params}
-          label="Choose a tag"
+          label={error ? error : 'Choose a tag'}
+          error={error ? true : false}
           onChange={(e) => setValue(e.target.value)}
           variant="outlined"
           onKeyDown={handleOnEnter}

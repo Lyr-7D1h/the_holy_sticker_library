@@ -27,7 +27,6 @@ const LibraryPage: FC = () => {
   ]
 
   const stickers = useAppSelector((state) => state.library.stickers)
-  console.log(stickers)
 
   useEffect(() => {
     dispatch(getStickers({ limit: 100 }))
@@ -42,9 +41,8 @@ const LibraryPage: FC = () => {
             className={classes.gridItem}
             key={sticker.hash}
             item
-            sm={1}
+            sm={2}
             xs={12}
-            spacing={3}
           >
             <LibraryImage hash={sticker.hash} />
           </Grid>

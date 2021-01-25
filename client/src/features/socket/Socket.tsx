@@ -31,7 +31,7 @@ const Socket: FC = ({ children }) => {
       } catch (e) {
         event = new SocketParsingError('Client: could not parse', e)
       }
-      console.log(event)
+      console.debug('Incomming event', event)
       dispatch({ type: event.type, payload: event.payload })
     }
   })
