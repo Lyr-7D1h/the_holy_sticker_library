@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   input: {
-    // width: '100%',
     backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
@@ -31,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputRoot: {
     color: 'inherit',
-    // padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     textDecoration: 'none',
@@ -39,7 +37,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const SearchInput: FC = () => {
+export interface SearchInputProps {
+  onEnter?: (text: string) => void
+}
+
+const SearchInput: FC<SearchInputProps> = ({ onEnter }) => {
   const classes = useStyles()
   const options = useAppSelector((s) => s.library.uniqueTags)
 
@@ -50,6 +52,7 @@ const SearchInput: FC = () => {
       </div>
       <div style={{ width: '100%', textDecoration: 'none' }}>
         <AutoInput
+          onEnter={onEnter}
           className={classes.input}
           classes={{
             root: classes.inputRoot,

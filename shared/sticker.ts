@@ -12,6 +12,8 @@ export interface Sticker {
 
 export interface GetStickersConstructor {
   limit?: number
+  noTag?: boolean
+  hasTag?: string
 }
 export interface GetStickersParams extends GetStickersConstructor {
   limit: number
@@ -22,7 +24,7 @@ export interface GetStickersParams extends GetStickersConstructor {
  */
 
 export class GetStickersRequest extends SocketEvent {
-  payload: GetStickersConstructor
+  payload: GetStickersParams
   constructor(payload: GetStickersConstructor) {
     payload.limit = payload.limit
       ? payload.limit > 50

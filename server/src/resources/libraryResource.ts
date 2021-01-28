@@ -25,14 +25,30 @@ const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
     'library/getStickers',
     (event: GetStickersRequest) => {
       return new Promise((res, rej) => {
-        fastify.db.all(
-          'SELECT * FROM stickers LIMIT ?',
-          [event.payload.limit],
-          (err, rows: Sticker[]) => {
-            if (err) rej(err)
-            res(new GetStickersResponse(rows))
-          }
-        )
+        const select = 'SELECT DISTINCT stickers.hash FROM stickers'
+        const wheres = []
+        const joins = []
+        const args = []
+
+        if (event.payload.noTag || event.payload.hasTag)
+          joins.push('LEFT JOIN tags ON tags.hash = stickers.hash ')
+
+        if (event.payload.noTag) wheres.push('tags.id IS NULL')
+
+        if (event.payload.hasTag) {
+          wheres.push(`LOWER(tags.tag) LIKE LOWER("%${event.payload.hasTag}%")`)
+        }
+
+        const where = wheres.length > 0 ? 'WHERE ' + wheres.join(' AND ') : ''
+        const join = joins.length > 0 ? joins.join(' ') : ''
+
+        args.push(event.payload.limit)
+        const query = [select, join, where, 'LIMIT ?'].join(' ')
+
+        fastify.db.all(query, args, (err, rows: Sticker[]) => {
+          if (err) rej(err)
+          res(new GetStickersResponse(rows))
+        })
       })
     }
   )

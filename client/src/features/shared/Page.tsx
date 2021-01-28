@@ -4,21 +4,21 @@ import {
   makeStyles,
   Toolbar,
   Typography,
-} from "@material-ui/core"
-import React, { FC } from "react"
-import Link from "./Link"
-import SearchInput from "./SearchInput"
+} from '@material-ui/core'
+import React, { FC } from 'react'
+import Link from './Link'
+import SearchInput from './SearchInput'
 import SelectableDrawer, {
   drawerWidth,
   SelectableDrawerProps,
-} from "./SelectableDrawer"
+} from './SelectableDrawer'
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
     zIndex: theme.zIndex.drawer + 2,
   },
   page: {
-    display: "flex",
+    display: 'flex',
   },
   content: {
     flexGrow: 1,
@@ -30,9 +30,10 @@ const useStyles = makeStyles((theme) => ({
 
 export interface PageProps {
   drawer?: SelectableDrawerProps
+  onSearch?: (text: string) => void
 }
 
-const Page: FC<PageProps> = ({ children, drawer }) => {
+const Page: FC<PageProps> = ({ children, drawer, onSearch }) => {
   const classes = useStyles()
   return (
     <div className={classes.page}>
@@ -43,11 +44,11 @@ const Page: FC<PageProps> = ({ children, drawer }) => {
               Holy Sticker Library
             </Typography>
           </Link>
-          <SearchInput />
+          {onSearch && <SearchInput onEnter={onSearch} />}
           <div className={classes.admin}>
             <Link to="auth">
               <Button
-                style={{ width: "20vw" }}
+                style={{ width: '20vw' }}
                 variant="contained"
                 color="secondary"
               >
@@ -63,7 +64,7 @@ const Page: FC<PageProps> = ({ children, drawer }) => {
         className={classes.content}
       >
         <div className={classes.toolbar} />
-        {children || ""}
+        {children || ''}
       </main>
     </div>
   )

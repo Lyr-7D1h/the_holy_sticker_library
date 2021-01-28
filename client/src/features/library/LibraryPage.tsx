@@ -37,17 +37,25 @@ const LibraryPage: FC = () => {
       tags: tags.filter((t) => t.hash === s.hash),
     })
   )
+
   function handleDelete(sticker: Sticker) {
     dispatch(removeSticker(sticker))
   }
+  function handleSearch(text: string) {
+    console.log(text)
+    dispatch(getStickers({ noTag: selected === 'Untagged', hasTag: text }))
+  }
 
   useEffect(() => {
-    dispatch(getStickers({ limit: 100 }))
+    dispatch(getStickers({ noTag: selected === 'Untagged' }))
     dispatch(getTags())
   }, [selected])
 
   return (
-    <Page drawer={{ items: drawerItems, selected, onChange: setSelected }}>
+    <Page
+      onSearch={handleSearch}
+      drawer={{ items: drawerItems, selected, onChange: setSelected }}
+    >
       <Grid container spacing={1}>
         {stickers.map((sticker) => (
           <Grid

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
-  GetStickersParams,
+  GetStickersConstructor,
   GetStickersRequest,
   RemoveStickerRequest,
   Sticker,
@@ -33,7 +33,7 @@ const slice = createSlice({
         .filter((x, i, a) => a.indexOf(x) == i)
     },
 
-    getStickers(_state, action: PayloadAction<GetStickersParams>) {
+    getStickers(_state, action: PayloadAction<GetStickersConstructor>) {
       send(new GetStickersRequest(action.payload))
     },
     updateStickers(state, action) {
