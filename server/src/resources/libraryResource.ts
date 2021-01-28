@@ -1,4 +1,9 @@
-import { GetStickersRequest, GetStickersResponse } from '@shared/sticker'
+import {
+  GetStickersRequest,
+  GetStickersResponse,
+  RemoveStickerRequest,
+  RemoveStickerResponse,
+} from '@shared/sticker'
 import { Sticker } from '@shared/sticker'
 import {
   GetTagsRequest,
@@ -8,6 +13,8 @@ import {
   AddTagResponse,
 } from '@shared/tag'
 import { FastifyInstance, FastifyPluginCallback } from 'fastify'
+import { unlink } from 'fs'
+import { join } from 'path'
 
 const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
   /**
@@ -29,6 +36,38 @@ const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
       })
     }
   )
+  fastify.addSocketHandler(
+    RemoveStickerRequest.type,
+    (event: RemoveStickerRequest) => {
+      return new Promise((res, rej) => {
+        fastify.db.run(
+          'DELETE FROM tags WHERE hash=?',
+          [event.payload.hash],
+          (err) => {
+            if (err) rej(err)
+
+            fastify.db.run(
+              'DELETE FROM stickers WHERE hash=?',
+              [event.payload.hash],
+              (err) => {
+                if (err) rej(err)
+                unlink(
+                  join(
+                    __dirname,
+                    `../../../resources/stickers/${event.payload.hash}.webp`
+                  ),
+                  (err) => {
+                    if (err) rej(err)
+                    res(new RemoveStickerResponse(event.payload.hash))
+                  }
+                )
+              }
+            )
+          }
+        )
+      })
+    }
+  )
 
   /**
    * TAGS
@@ -44,7 +83,6 @@ const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
   })
 
   fastify.addSocketHandler(AddTagRequest.type, (event: AddTagRequest) => {
-    console.log(event)
     return new Promise((res, rej) => {
       fastify.db.get(
         'SELECT * FROM tags WHERE hash=? AND tag=?',

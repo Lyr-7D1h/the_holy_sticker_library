@@ -1,10 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { FC, KeyboardEventHandler, useState } from 'react'
-import TextField, {
-  FilledTextFieldProps,
-  OutlinedTextFieldProps,
-  StandardTextFieldProps,
-} from '@material-ui/core/TextField'
+import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -18,18 +14,23 @@ const useStyles = makeStyles({
   },
 })
 
-export interface AutoInputOption {
-  id: number
-  label: string
-}
-
 export interface AutoInputProps {
-  options: AutoInputOption[]
+  options: string[]
+  label?: string
+  classes?: Partial<Record<'root', string>>
+  className?: string
   error?: string
   onEnter?: (value: string) => void
 }
 
-const AutoInput: FC<AutoInputProps> = ({ options, error, onEnter }) => {
+const AutoInput: FC<AutoInputProps> = ({
+  options,
+  label = 'Search',
+  error,
+  onEnter,
+  classes: inputClasses,
+  className: inputClassname,
+}) => {
   const [value, setValue] = useState('')
   const classes = useStyles()
 
@@ -48,29 +49,19 @@ const AutoInput: FC<AutoInputProps> = ({ options, error, onEnter }) => {
       autoHighlight
       freeSolo
       onChange={(_, v) => {
-        if (v) setValue(typeof v === 'string' ? v : v.label)
+        if (v) setValue(v)
       }}
-      getOptionLabel={(option) => {
-        console.log(option)
-        if (typeof option === 'string') {
-          return option
-        } else {
-          return option.label
-        }
-      }}
-      renderOption={(option) => <React.Fragment>{option.label}</React.Fragment>}
-      renderInput={(
-        params:
-          | (JSX.IntrinsicAttributes & StandardTextFieldProps)
-          | (JSX.IntrinsicAttributes & FilledTextFieldProps)
-          | (JSX.IntrinsicAttributes & OutlinedTextFieldProps)
-      ) => (
+      getOptionLabel={(option) => option}
+      renderOption={(option) => <React.Fragment>{option}</React.Fragment>}
+      renderInput={(params) => (
         <TextField
           {...params}
-          label={error ? error : 'Choose a tag'}
+          classes={inputClasses}
+          className={inputClassname}
+          label={error ? error : label}
           error={error ? true : false}
           onChange={(e) => setValue(e.target.value)}
-          variant="outlined"
+          variant="standard"
           onKeyDown={handleOnEnter}
           inputProps={{
             ...params.inputProps,

@@ -2,7 +2,7 @@ import { Card, Chip, makeStyles, Modal, Typography } from '@material-ui/core'
 import { FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from 'store'
-import AutoInput, { AutoInputOption } from '../shared/AutoInput'
+import AutoInput from '../shared/AutoInput'
 import { addTag } from './librarySlice'
 
 const useStyles = makeStyles((theme) => ({
@@ -29,11 +29,9 @@ const LibraryImage: FC<{ hash: string }> = ({ hash }) => {
   const [open, setOpen] = useState(false)
   const [error, setError] = useState<string>()
   const dispatch = useDispatch()
+
   const tags = useAppSelector((s) => s.library.tags)
-  const options: AutoInputOption[] = tags.map((t) => ({
-    id: t.id,
-    label: t.tag,
-  }))
+  const options = useAppSelector((s) => s.library.uniqueTags)
   const stickerTags = tags.filter((s) => s.hash === hash)
 
   const classes = useStyles()
@@ -75,7 +73,12 @@ const LibraryImage: FC<{ hash: string }> = ({ hash }) => {
               src={`/resources/stickers/${hash}.webp`}
             />
           </div>
-          <AutoInput onEnter={handleNewTag} options={options} error={error} />
+          <AutoInput
+            label="Choose a tag"
+            onEnter={handleNewTag}
+            options={options}
+            error={error}
+          />
         </Card>
       </Modal>
     </>
