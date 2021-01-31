@@ -39,7 +39,9 @@ const LibraryPage: FC = () => {
   )
 
   function handleDelete(sticker: Sticker) {
-    dispatch(removeSticker(sticker))
+    if (window.confirm('Are your sure you want to remove this?')) {
+      dispatch(removeSticker(sticker))
+    }
   }
   function handleSearch(text: string) {
     console.log(text)
