@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   GetStickersConstructor,
   GetStickersRequest,
-  GetStickersResponse,
   GetStickersResponseParams,
   RemoveStickerRequest,
   Sticker,
