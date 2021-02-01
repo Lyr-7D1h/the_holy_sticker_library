@@ -6,7 +6,8 @@ import Page from '../shared/Page'
 import { getStickers, getTags, removeSticker } from './librarySlice'
 import { Chip, Grid, IconButton, makeStyles } from '@material-ui/core'
 import LibraryImage from './LibraryImage'
-import { Sticker } from '@shared/sticker'
+import { GetStickersConstructor, Sticker } from '@shared/sticker'
+import { Waypoint } from 'react-waypoint'
 
 const useStyles = makeStyles(() => ({
   actions: {
@@ -22,7 +23,9 @@ const useStyles = makeStyles(() => ({
 }))
 
 const LibraryPage: FC = () => {
-  const [selected, setSelected] = useState('All')
+  const [stickerOptions, setStickerOptions] = useState<GetStickersConstructor>(
+    {}
+  )
   const classes = useStyles()
   const dispatch = useDispatch()
   const drawerItems = [
@@ -44,19 +47,40 @@ const LibraryPage: FC = () => {
     }
   }
   function handleSearch(text: string) {
-    console.log(text)
-    dispatch(getStickers({ noTag: selected === 'Untagged', hasTag: text }))
+    setStickerOptions((s) => ({
+      ...s,
+      hasTag: text,
+      page: 0,
+    }))
+  }
+  function handleFilter(title: string) {
+    if (title === 'Untagged') {
+      setStickerOptions({ noTag: true })
+    } else if (title === 'All') {
+      setStickerOptions({})
+    }
+  }
+  function handleNextPage() {
+    setStickerOptions((s) => ({ ...s, page: s.page ? s.page + 1 : 1 }))
   }
 
   useEffect(() => {
-    dispatch(getStickers({ noTag: selected === 'Untagged' }))
+    console.log(stickerOptions)
+    dispatch(getStickers(stickerOptions))
+  }, [stickerOptions])
+
+  useEffect(() => {
     dispatch(getTags())
-  }, [selected])
+  }, [])
 
   return (
     <Page
       onSearch={handleSearch}
-      drawer={{ items: drawerItems, selected, onChange: setSelected }}
+      drawer={{
+        items: drawerItems,
+        defaultSelected: 'All',
+        onChange: handleFilter,
+      }}
     >
       <Grid container spacing={1}>
         {stickers.map((sticker) => (
@@ -84,6 +108,7 @@ const LibraryPage: FC = () => {
             <LibraryImage hash={sticker.hash} />
           </Grid>
         ))}
+        {stickers.length >= 50 && <Waypoint onEnter={handleNextPage} />}
       </Grid>
     </Page>
   )

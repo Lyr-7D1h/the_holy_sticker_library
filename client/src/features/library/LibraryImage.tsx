@@ -39,7 +39,7 @@ const LibraryImage: FC<{ hash: string }> = ({ hash }) => {
   function handleNewTag(tag: string) {
     if (stickerTags.some((s) => s.tag === tag)) {
       setError('Tag already on sticker')
-    } else if (tag.length < 3) {
+    } else if (tag.length < 2) {
       setError('Tag too short (<3)')
     } else {
       if (error) setError(undefined)

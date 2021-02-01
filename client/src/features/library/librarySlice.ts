@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   GetStickersConstructor,
   GetStickersRequest,
+  GetStickersResponse,
+  GetStickersResponseParams,
   RemoveStickerRequest,
   Sticker,
 } from '@shared/sticker'
@@ -14,6 +16,7 @@ const slice = createSlice({
     stickers: [] as Sticker[],
     tags: [] as Tag[],
     uniqueTags: [] as string[],
+    _page: 0,
   },
   reducers: {
     addTag(_state, action: PayloadAction<TagCreate>) {
@@ -36,8 +39,14 @@ const slice = createSlice({
     getStickers(_state, action: PayloadAction<GetStickersConstructor>) {
       send(new GetStickersRequest(action.payload))
     },
-    updateStickers(state, action) {
-      state.stickers = action.payload
+    updateStickers(state, action: PayloadAction<GetStickersResponseParams>) {
+      if (action.payload.page === 0) {
+        state.stickers = action.payload.stickers
+        state._page = 0
+      } else if (action.payload.page > state._page) {
+        state._page = action.payload.page
+        state.stickers = state.stickers.concat(action.payload.stickers)
+      }
     },
 
     removeSticker(_state, action: PayloadAction<Sticker>) {

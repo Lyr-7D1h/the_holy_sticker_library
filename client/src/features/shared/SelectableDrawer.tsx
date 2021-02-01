@@ -6,14 +6,14 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-} from "@material-ui/core"
-import React, { FC, ReactElement } from "react"
+} from '@material-ui/core'
+import React, { FC, ReactElement, useState } from 'react'
 
 export const drawerWidth = 230
 
 const useStyles = makeStyles({
   drawer: {
-    overflow: "auto",
+    overflow: 'auto',
   },
   drawerPaper: {
     width: drawerWidth,
@@ -22,16 +22,22 @@ const useStyles = makeStyles({
 
 export interface SelectableDrawerProps {
   items: { title: string; icon: ReactElement }[]
-  selected?: string
+  defaultSelected?: string
   onChange: (title: string) => void
 }
 
 const SelectableDrawer: FC<SelectableDrawerProps> = ({
   items,
   onChange,
-  selected = "",
+  defaultSelected = '',
 }) => {
   const classes = useStyles()
+  const [selected, setSelected] = useState(defaultSelected)
+
+  function handleOnChange(title: string) {
+    setSelected(title)
+    onChange(title)
+  }
 
   return (
     <Drawer
@@ -46,7 +52,7 @@ const SelectableDrawer: FC<SelectableDrawerProps> = ({
       <List>
         {items.map((item, i) => (
           <ListItem
-            onClick={() => onChange(item.title)}
+            onClick={() => handleOnChange(item.title)}
             selected={item.title === selected}
             key={`${item.title}-${i}`}
             button

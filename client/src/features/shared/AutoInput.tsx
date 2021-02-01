@@ -31,13 +31,10 @@ const AutoInput: FC<AutoInputProps> = ({
   classes: inputClasses,
   className: inputClassname,
 }) => {
-  const [value, setValue] = useState('')
   const classes = useStyles()
 
-  const handleOnEnter: KeyboardEventHandler = (e) => {
-    if (e.key === 'Enter') {
-      if (value && onEnter) onEnter(value)
-    }
+  const handleOnChange = (v: string | null) => {
+    if (v && onEnter) onEnter(v)
   }
 
   return (
@@ -46,13 +43,9 @@ const AutoInput: FC<AutoInputProps> = ({
       classes={{
         option: classes.option,
       }}
-      autoHighlight
       freeSolo
-      onChange={(_, v) => {
-        if (v) setValue(v)
-      }}
-      getOptionLabel={(option) => option}
-      renderOption={(option) => <React.Fragment>{option}</React.Fragment>}
+      onChange={(_, v) => handleOnChange(v)}
+      renderOption={(option) => option}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -60,9 +53,7 @@ const AutoInput: FC<AutoInputProps> = ({
           className={inputClassname}
           label={error ? error : label}
           error={error ? true : false}
-          onChange={(e) => setValue(e.target.value)}
           variant="standard"
-          onKeyDown={handleOnEnter}
           inputProps={{
             ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill

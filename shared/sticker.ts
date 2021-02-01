@@ -10,18 +10,19 @@ export interface Sticker {
   tags?: Tag[]
 }
 
+/**
+ * Sticker Events
+ */
 export interface GetStickersConstructor {
   limit?: number
   noTag?: boolean
   hasTag?: string
+  page?: number
 }
 export interface GetStickersParams extends GetStickersConstructor {
   limit: number
+  page: number
 }
-
-/**
- * Sticker Events
- */
 
 export class GetStickersRequest extends SocketEvent {
   payload: GetStickersParams
@@ -31,12 +32,19 @@ export class GetStickersRequest extends SocketEvent {
         ? 50
         : payload.limit
       : 50
+    payload.page = payload.page ? payload.page : 0
     super('library/getStickers', payload)
   }
 }
 
+export interface GetStickersResponseParams {
+  stickers: Sticker[]
+  page: number
+}
+
 export class GetStickersResponse extends SocketEvent {
-  constructor(payload: Sticker[]) {
+  payload: GetStickersResponseParams
+  constructor(payload: GetStickersResponseParams) {
     super('library/updateStickers', payload)
   }
 }
