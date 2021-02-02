@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AuthenticateRequestParams, AuthenticateRequest } from '@shared/auth'
 import { send } from '../socket/Socket'
 
 const slice = createSlice({
@@ -7,12 +8,15 @@ const slice = createSlice({
     isAdmin: false,
   },
   reducers: {
-    authenticate(state, action) {
-      return
+    request(state, action: PayloadAction<AuthenticateRequestParams>) {
+      send(new AuthenticateRequest(action.payload))
+    },
+    response(state, action: PayloadAction<boolean>) {
+      state.isAdmin = action.payload
     },
   },
 })
 
-export const { authenticate } = slice.actions
+export const { request: authenticateRequest } = slice.actions
 
 export default slice.reducer

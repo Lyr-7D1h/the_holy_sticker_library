@@ -63,7 +63,7 @@ const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
       })
     }
   )
-  fastify.addSocketHandler(
+  fastify.addAdminSocketHandler(
     RemoveStickerRequest.type,
     (event: RemoveStickerRequest) => {
       return new Promise((res, rej) => {
@@ -109,7 +109,7 @@ const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
     })
   })
 
-  fastify.addSocketHandler(AddTagRequest.type, (event: AddTagRequest) => {
+  fastify.addAdminSocketHandler(AddTagRequest.type, (event: AddTagRequest) => {
     return new Promise((res, rej) => {
       fastify.db.get(
         'SELECT * FROM tags WHERE hash=? AND tag=?',
