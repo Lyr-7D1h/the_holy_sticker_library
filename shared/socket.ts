@@ -4,13 +4,12 @@ export class SocketEvent {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any
 
-  // TODO: add support for generic on payload
   constructor(type: string, payload = {}) {
     this.type = type
     this.payload = payload
   }
 
-  // TODO: add validation
+  // FIXME: add validation
   static parse(data: string): SocketEvent {
     const { type, payload } = JSON.parse(data)
     return new SocketEvent(type, payload)

@@ -8,9 +8,6 @@ NAME="hsl"
 CURRENT_DIR=$(realpath `dirname "$0"`)
 PROJECT_FOLDER=`dirname $CURRENT_DIR`
 
-
-echo $PROJECT_FOLDER
-
 if ! command -v tmux &> /dev/null
 then
 	echo Please install tmux

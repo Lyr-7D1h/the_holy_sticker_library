@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "scripts/tmux-dev.sh",
+    "build": "scripts/build.sh",
     "watch:shared": "tsc -b --clean ./shared && tsc -b --watch ./shared",
     "sync:stickers": "node server/scripts/sync_stickers.js",
     "lint": "npx eslint --max-warnings 0 ."

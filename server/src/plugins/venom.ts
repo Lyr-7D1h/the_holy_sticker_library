@@ -1,11 +1,11 @@
-import { FastifyInstance, FastifyPluginCallback } from "fastify"
-import fp from "fastify-plugin"
-import fs from "fs"
-import { join } from "path"
-import { create, HostDevice, Whatsapp } from "venom-bot"
+import { FastifyInstance, FastifyPluginCallback } from 'fastify'
+import fp from 'fastify-plugin'
+import fs from 'fs'
+import { join } from 'path'
+import { create, HostDevice, Whatsapp } from 'venom-bot'
 
 interface VenomSetup {
-  status: "pending" | "loggedin" | "loggedout"
+  status: 'pending' | 'loggedin' | 'loggedout'
   device?: HostDevice
   client?: Whatsapp
 }
@@ -17,14 +17,14 @@ interface VenomPlugin extends VenomSetup {
 }
 
 /** Declare VenomPlugin Interface for FastifyInstance */
-declare module "fastify" {
+declare module 'fastify' {
   interface FastifyInstance {
     venom: VenomPlugin
   }
 }
 
 const venomInfo: VenomSetup = {
-  status: "pending",
+  status: 'pending',
 }
 
 /** Get all information needed */
@@ -34,7 +34,7 @@ function getInfo(client: Whatsapp) {
 
 /** Populate venomInfo and call import */
 function handleClient(client: Whatsapp, fastify: FastifyInstance) {
-  venomInfo.status = "loggedin"
+  venomInfo.status = 'loggedin'
 
   getInfo(client)
     .then(([device]) => {
@@ -42,7 +42,7 @@ function handleClient(client: Whatsapp, fastify: FastifyInstance) {
       venomInfo.client = client
 
       // Start importing venom hooks
-      fastify.import(join(__dirname, "../venom_hooks"))
+      fastify.import(join(__dirname, '../venom_hooks'))
     })
     .catch((err) => {
       fastify.log.error(err)
@@ -50,21 +50,20 @@ function handleClient(client: Whatsapp, fastify: FastifyInstance) {
 }
 
 function writeQR(qrCode: string) {
-  qrCode = qrCode.replace("data:image/png;base64,", "")
-  const buffer = Buffer.from(qrCode, "base64")
+  qrCode = qrCode.replace('data:image/png;base64,', '')
+  const buffer = Buffer.from(qrCode, 'base64')
 
-  fs.writeFileSync("./resources/qr.png", buffer)
+  fs.writeFileSync('./resources/qr.png', buffer)
 }
 
 /**
  * Setting up venom library to work with fastify
  */
 const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.decorate("venom", venomInfo)
+  fastify.decorate('venom', venomInfo)
 
   // close client when fastify closes
-  fastify.addHook("onClose", (_, done) => {
-    // TODO: tests if works
+  fastify.addHook('onClose', (_, done) => {
     if (venomInfo.client) {
       venomInfo.client.close()
     }
@@ -72,14 +71,14 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
   })
 
   create(
-    "main",
+    'main',
     (base64QR) => {
       writeQR(base64QR)
     },
     (status) => {
       fastify.log.info(`Venom: Status is "${status}"`)
-      if (status === "notLogged") {
-        venomInfo.status = "loggedout"
+      if (status === 'notLogged') {
+        venomInfo.status = 'loggedout'
       }
     },
     {
@@ -98,6 +97,6 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
 }
 
 export default fp(venomPlugin, {
-  name: "venom",
-  dependencies: ["db", "import"],
+  name: 'venom',
+  dependencies: ['db', 'import'],
 })
