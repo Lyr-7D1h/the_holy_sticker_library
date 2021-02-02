@@ -30,6 +30,7 @@ const LibraryImage: FC<{ hash: string }> = ({ hash }) => {
   const [error, setError] = useState<string>()
   const dispatch = useDispatch()
 
+  const isAdmin = useAppSelector((s) => s.auth.isAdmin)
   const tags = useAppSelector((s) => s.library.tags)
   const options = useAppSelector((s) => s.library.uniqueTags)
   const stickerTags = tags.filter((s) => s.hash === hash)
@@ -50,7 +51,9 @@ const LibraryImage: FC<{ hash: string }> = ({ hash }) => {
   return (
     <>
       <img
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          if (isAdmin) setOpen(true)
+        }}
         className={classes.image}
         src={`/resources/stickers/${hash}.webp`}
       />

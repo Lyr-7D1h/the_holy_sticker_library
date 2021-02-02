@@ -6,6 +6,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import React, { FC } from 'react'
+import { useLocation } from 'react-router-dom'
 import Link from './Link'
 import SearchInput from './SearchInput'
 import SelectableDrawer, {
@@ -35,6 +36,9 @@ export interface PageProps {
 
 const Page: FC<PageProps> = ({ children, drawer, onSearch }) => {
   const classes = useStyles()
+
+  const location = useLocation()
+
   return (
     <div className={classes.page}>
       <AppBar position="fixed" style={{ zIndex: 1201 }}>
@@ -45,17 +49,19 @@ const Page: FC<PageProps> = ({ children, drawer, onSearch }) => {
             </Typography>
           </Link>
           {onSearch && <SearchInput onEnter={onSearch} />}
-          <div className={classes.admin}>
-            <Link to="auth">
-              <Button
-                style={{ width: '20vw' }}
-                variant="contained"
-                color="secondary"
-              >
-                QR
-              </Button>
-            </Link>
-          </div>
+          {location.pathname.replace('/', '') !== 'auth' && (
+            <div className={classes.admin}>
+              <Link to="auth">
+                <Button
+                  style={{ width: '20vw' }}
+                  variant="contained"
+                  color="secondary"
+                >
+                  Admin
+                </Button>
+              </Link>
+            </div>
+          )}
         </Toolbar>
       </AppBar>
       <nav>{drawer && <SelectableDrawer {...drawer} />}</nav>

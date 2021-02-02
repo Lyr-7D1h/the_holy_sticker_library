@@ -33,6 +33,7 @@ const LibraryPage: FC = () => {
     { title: 'Untagged', icon: <SpeakerNotesOff /> },
   ]
 
+  const isAdmin = useAppSelector((s) => s.auth.isAdmin)
   const tags = useAppSelector((state) => state.library.tags)
   const stickers = useAppSelector((state) => state.library.stickers).map(
     (s) => ({
@@ -65,7 +66,6 @@ const LibraryPage: FC = () => {
   }
 
   useEffect(() => {
-    console.log(stickerOptions)
     dispatch(getStickers(stickerOptions))
   }, [stickerOptions])
 
@@ -97,14 +97,16 @@ const LibraryPage: FC = () => {
                   <Chip key={`${s.id}_${s.tag}_${s.hash}`} label={s.tag} />
                 ))}
             </div>
-            <div className={classes.actions}>
-              <IconButton
-                onClick={() => handleDelete(sticker)}
-                aria-label="delete"
-              >
-                <Delete />
-              </IconButton>
-            </div>
+            {isAdmin && (
+              <div className={classes.actions}>
+                <IconButton
+                  onClick={() => handleDelete(sticker)}
+                  aria-label="delete"
+                >
+                  <Delete />
+                </IconButton>
+              </div>
+            )}
             <LibraryImage hash={sticker.hash} />
           </Grid>
         ))}
