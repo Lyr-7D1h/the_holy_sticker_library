@@ -1,7 +1,8 @@
 tokens
 session
 node_modules
-resources/stickers/*.webp
+resources/**/*.webp
+resources/**/*.png
 .env*
 lib.db
 .nyc_output
