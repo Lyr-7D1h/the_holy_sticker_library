@@ -52,7 +52,7 @@ const Page: FC<PageProps> = ({ children, drawer, onSearch }) => {
                 variant="contained"
                 color="secondary"
               >
-                ADMIN
+                QR
               </Button>
             </Link>
           </div>
