@@ -30,13 +30,13 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Test Server
-        run: npm test
-        working-directory: server
+      # - name: Test Server
+      #   run: npm test
+      #   working-directory: server
 
-      - name: Test Client
-        run: npm test
-        working-directory: client
+      # - name: Test Client
+      #   run: npm test
+      #   working-directory: client
 
   docker:
     needs: test
