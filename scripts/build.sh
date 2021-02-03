@@ -6,6 +6,10 @@ PROJECT_FOLDER=`dirname $CURRENT_DIR`
 
 npm ci
 
+cd $PROJECT_FOLDER/shared
+rm -rf $PROJECT_FOLDER/shared/build
+npx tsc
+
 cd $PROJECT_FOLDER/server
 npm ci 
 npm run build

@@ -24,25 +24,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Build Server
-        run: |
-          npm ci
-          npm run build
-        working-directory: server
+      - name: Build
+        run: npm run build
 
-      - name: Build Client
-        run: |
-          npm ci
-          npm run build
-        working-directory: client
-
-      - name: Linter Server
+      - name: Lint
         run: npm run linter
-        working-directory: server
-
-      - name: Linter Client
-        run: npm run linter
-        working-directory: client
 
       - name: Test Server
         run: npm test
