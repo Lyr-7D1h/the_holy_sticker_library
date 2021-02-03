@@ -28,7 +28,7 @@ jobs:
         run: npm run build
 
       - name: Lint
-        run: npm run linter
+        run: npm run lint
 
       - name: Test Server
         run: npm test
