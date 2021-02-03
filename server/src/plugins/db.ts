@@ -19,6 +19,10 @@ const dbPlugin: FastifyPluginCallback = (fastify, _, done) => {
       })
     })
 
+    db.on('error', (err) => {
+      fastify.log.error(`Uncaught DB Error: ${err.message}`)
+    })
+
     db.run('CREATE TABLE IF NOT EXISTS stickers (hash TEXT UNIQUE NOT NULL)')
     db.run(
       'CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY AUTOINCREMENT, tag TEXT NOT NULL, hash TEXT NOT NULL)'

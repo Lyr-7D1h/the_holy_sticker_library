@@ -1,5 +1,10 @@
 import { FastifyInstance } from 'fastify'
 import { Message, Whatsapp } from 'venom-bot'
+import help from './commands/help'
+import library from './commands/library'
+import query from './commands/query'
+import sticker from './commands/sticker'
+import send from './commands/sticker'
 import tag from './commands/tag'
 import register, { User } from './register'
 
@@ -24,6 +29,10 @@ export default class HSL {
   async parseMessage(message: Message): Promise<void> {
     const user = await this.register(message)
 
+    if (message.type === 'sticker') {
+      sticker(user, message)
+      return
+    }
     this.fastify.log.debug(`Parsing: ${message.content} by ${user.numberId}`)
 
     const content = message.body.toLowerCase()
@@ -34,26 +43,35 @@ export default class HSL {
       .slice(1)
       .map((key) => key.trim())
       .filter((key) => key !== '')
+      .join(' ')
+      .split(/;|,/g)
+      .map((key) => key.trim())
 
     switch (command) {
-      case 'q':
-        if (args.length == 0) {
-          this.client.sendText(message.chat.contact.id, 'No keywords given')
-          break
-        }
-
-        //   query(fastify, args);
+      case 'h':
+      case 'help':
+        help(user)
         break
-      case 't' || 'tag':
-        tag(this.fastify, args)
+      case 'q':
+      case 'query':
+        query(user, args)
+        break
+      case 't':
+      case 'tag':
+        tag(user, args)
         break
       case 's':
-        //   send(fastify, args);
+      case 'send':
+        send(user, message)
         break
       case 'l':
+      case 'library':
+        library(user)
         break
       default:
-        this.client.sendText(message.from, 'Command not recognized')
+        user.sendText(
+          'Command not recognized\nWrite `h` or `help` for a list of commands'
+        )
     }
   }
 
