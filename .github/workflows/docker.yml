@@ -1,4 +1,4 @@
-name: CI
+name: Publish on Docker
 
 on: workflow_dispatch
 
