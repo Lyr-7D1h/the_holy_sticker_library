@@ -23,6 +23,9 @@ const dbPlugin: FastifyPluginCallback = (fastify, _, done) => {
     db.run(
       'CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY AUTOINCREMENT, tag TEXT NOT NULL, hash TEXT NOT NULL)'
     )
+    db.run(
+      'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, numberId TEXT UNIQUE NOT NULL, latestTag TEXT NOT NULL, createdAt TEXT NOT NULL)'
+    )
     fastify.decorate('db', db)
     done()
   })

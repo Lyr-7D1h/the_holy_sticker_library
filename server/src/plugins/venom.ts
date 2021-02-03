@@ -42,7 +42,9 @@ function handleClient(client: Whatsapp, fastify: FastifyInstance) {
       venomInfo.client = client
 
       // Start importing venom hooks
-      fastify.import(join(__dirname, '../venom_hooks'))
+      import(join(__dirname, '../whatsapp'))
+        .then((i) => new i.default(fastify))
+        .catch((err) => fastify.log.error(err))
     })
     .catch((err) => {
       fastify.log.error(err)
@@ -53,7 +55,7 @@ function writeQR(qrCode: string) {
   qrCode = qrCode.replace('data:image/png;base64,', '')
   const buffer = Buffer.from(qrCode, 'base64')
 
-  fs.writeFileSync('./resources/qr.png', buffer)
+  fs.writeFileSync(join(__dirname, '../../../resources/qr.png'), buffer)
 }
 
 /**
@@ -71,7 +73,7 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
   })
 
   create(
-    'main',
+    'hsl',
     (base64QR) => {
       writeQR(base64QR)
     },
@@ -98,5 +100,5 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
 
 export default fp(venomPlugin, {
   name: 'venom',
-  dependencies: ['db', 'import'],
+  dependencies: ['db'],
 })
