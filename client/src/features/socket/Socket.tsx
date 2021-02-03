@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { SocketEvent, SocketParsingError } from '@shared/socket'
 
-const sock = new WebSocket('ws://localhost:3000/ws')
+const sock = new WebSocket('ws://localhost:5000/ws')
 
 sock.onerror = (e) => {
   console.error(e)

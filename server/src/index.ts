@@ -22,11 +22,21 @@ const fastify = Fastify({
   disableRequestLogging: true,
 })
 
+if (process.env.NODE_ENV === 'production') {
+  fastify.setNotFoundHandler((_request, reply) => {
+    reply.sendFile('index.html')
+  })
+  fastify.register(fastifyStatic, {
+    root: path.join(__dirname, '../public'),
+  })
+}
+
 fastify
   .register(fastifySensible)
 
   .register(fastifyStatic, {
     root: path.join(__dirname, '../../resources'),
+    decorateReply: process.env.NODE_ENV !== 'production',
     prefix: '/resources',
   })
 
@@ -43,9 +53,5 @@ fastify
     if (err) {
       fastify.log.error(err.message)
       process.exit(1)
-    }
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log(fastify.printRoutes())
     }
   })

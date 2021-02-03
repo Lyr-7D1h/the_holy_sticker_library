@@ -8,4 +8,5 @@ lib.db
 .nyc_output
 .eslintcache
 build
+public
 tsconfig.tsbuildinfo
