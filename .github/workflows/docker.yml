@@ -26,4 +26,4 @@ jobs:
           docker buildx build --push \
             --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:${GITHUB_SHA::8}" \
             --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:latest" \
-            --platform linux/amd64,linux/arm/v7 .
+            --platform linux/arm/v7 .
