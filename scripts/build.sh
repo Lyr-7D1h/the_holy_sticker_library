@@ -1,6 +1,8 @@
 #!/bin/bash
 # Build all projects needed for production
 
+set -e
+
 CURRENT_DIR=$(realpath `dirname "$0"`)
 PROJECT_FOLDER=`dirname $CURRENT_DIR`
 

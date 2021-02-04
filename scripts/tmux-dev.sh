@@ -3,6 +3,8 @@
 # AUTO RUN YOUR PROJECTS WITH ALL PANELS NEEDED
 #
 
+set -e
+
 NAME="hsl"
 
 CURRENT_DIR=$(realpath `dirname "$0"`)
