@@ -30,11 +30,11 @@ fi
 cd $PROJECT_FOLDER
 
 tmux new-session -d -s $NAME
-tmux send-keys -t %0 "cd client" C-m
-tmux send-keys -t %0 "npm start" C-m
+tmux send-keys -t $NAME "cd client" C-m
+tmux send-keys -t $NAME "npm start" C-m
 tmux split-window -h 
-tmux send-keys -t %1 "cd server" C-m
-tmux send-keys -t %1 "npm start" C-m
-tmux split-window -v -t %0 -p 30 
-tmux send-keys -t %2 "npm run watch:shared" C-m
+tmux send-keys -t $NAME "cd server" C-m
+tmux send-keys -t $NAME "npm start" C-m
+tmux split-window -v -t $NAME:0.0 -p 30 
+tmux send-keys -t $NAME "npm run watch:shared" C-m
 tmux a -d -t $NAME

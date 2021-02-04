@@ -1,5 +1,4 @@
 tokens
-session
 node_modules
 resources/**/*.webp
 resources/**/*.png

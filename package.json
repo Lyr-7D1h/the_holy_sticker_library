@@ -4,9 +4,9 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "start": "scripts/tmux-dev.sh",
+    "start": "./scripts/tmux-dev.sh",
     "start:prod": "cd server && npm run start:prod",
-    "build": "scripts/build.sh",
+    "build": "./scripts/build.sh",
     "watch:shared": "tsc -b --clean ./shared && tsc -b --watch ./shared",
     "sync:stickers": "node server/scripts/sync_stickers.js",
     "lint": "npx eslint --max-warnings 0 ."

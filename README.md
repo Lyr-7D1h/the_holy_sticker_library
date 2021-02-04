@@ -29,5 +29,5 @@ npm run lint
 
 ```
 docker build -t holystickerlibrary:latest .
-docker run --privileged holystickerlibrary:latest
+docker run --init --cap-add=SYS_ADMIN -it holystickerlibrary:latest
 ```

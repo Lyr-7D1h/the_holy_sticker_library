@@ -86,6 +86,9 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
     {
       logQR: false,
       autoClose: 0,
+      browserArgs: ['--disable-dev-shm-usage'],
+      useChrome: true,
+      puppeteerOptions: { executablePath: 'chromium' },
       disableWelcome: true,
     }
   )
