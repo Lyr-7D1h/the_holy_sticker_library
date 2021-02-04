@@ -1,5 +1,5 @@
 # FROM node:12-slim
-FROM node:14-alpine AS build
+FROM node:12-alpine AS build
 # Run with --init arg to reap zombie processes.
 
 # Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
