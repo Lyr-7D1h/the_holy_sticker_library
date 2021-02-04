@@ -31,7 +31,7 @@ COPY . /
 
 RUN npm run build
 
-RUN rm -rf /server/node_modules
+# RUN rm -rf /server/node_modules
 RUN rm -rf /server/src
 
 # Minimized version without source code 
@@ -46,7 +46,7 @@ COPY --from=build /resources resources
 WORKDIR /usr/src/app/server
 
 # Replace with production dependencies
-RUN npm ci --production
+# RUN npm ci --production
 
 # RUN useradd -ms /bin/bash -r -G audio,video sticker
 RUN adduser --shell /bin/bash --disabled-password sticker sticker && \

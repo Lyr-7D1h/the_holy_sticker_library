@@ -9,7 +9,8 @@ declare module 'fastify' {
 }
 
 const dbPlugin: FastifyPluginCallback = (fastify, _, done) => {
-  const db = new sqlite3.Database('lib.db')
+  if (!process.env.DB_PATH) fastify.log.debug('No DB_PATH given using ./lib.db')
+  const db = new sqlite3.Database(process.env.DB_PATH || 'lib.db')
 
   db.serialize(() => {
     fastify.addHook('onClose', (fastify, done) => {
