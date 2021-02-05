@@ -49,11 +49,11 @@ jobs:
         run: |
           docker manifest create "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:latest" \
             "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:armv7" \
-            "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64" \
+            "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64"
           docker manifest push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:latest"
       - name: Build SHA Manifest
         run: |
           docker manifest create "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:${GITHUB_SHA::8}" \
             "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:armv7" \
-            "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64" \
+            "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64"
           docker manifest push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:${GITHUB_SHA::8}"
