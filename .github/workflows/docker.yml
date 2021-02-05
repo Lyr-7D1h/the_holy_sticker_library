@@ -1,4 +1,10 @@
-name: Publish on Docker
+# Build for multiple architecture support
+#
+# More info:
+# https://docs.docker.com/engine/reference/commandline/manifest/
+# https://docs.docker.com/buildx/working-with-buildx/
+
+name: Publish Stable Docker
 
 on: workflow_dispatch
 
@@ -21,9 +27,25 @@ jobs:
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           buildx-version: latest
-      - name: Build and push
+      # - name: Register Arm Executable
+      #   run: docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
+      # - name: Use new builder
+      #   run: |
+      #     docker buildx create --name builder
+      #     docker buildx use builder
+      - name: Build ArmV7
         run: |
           docker buildx build -f Dockerfile.arm --push \
             --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:${GITHUB_SHA::8}" \
-            --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:latest" \
+            --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:armv7" \
             --platform linux/arm/v7 .
+      - name: Build Amd64
+        run: |
+          docker build -t "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64" .
+          docker push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64"
+      - name: Build shared manifest
+        run: |
+          docker manifest create "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:stable" \
+            "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:armv7" \
+            "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64" \
+          docker manifest push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:stable"
