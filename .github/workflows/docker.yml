@@ -5,7 +5,7 @@ on: workflow_dispatch
 jobs:
   docker:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Checkout Branch
@@ -23,7 +23,7 @@ jobs:
           buildx-version: latest
       - name: Build and push
         run: |
-          docker buildx build --push \
+          docker buildx build -f Dockerfile.arm --push \
             --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:${GITHUB_SHA::8}" \
             --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:latest" \
             --platform linux/arm/v7 .

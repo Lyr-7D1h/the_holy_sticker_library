@@ -1,11 +1,7 @@
-# Docker production build
-# See more: https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#running-on-alpine
-
-
 FROM node:14-alpine AS build
 
 # Installs latest Chromium (85) package.
-RUN apk add --no-cache \
+RUN apk add --update --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community --repository http://dl-3.alpinelinux.org/alpine/edge/main \
       chromium \
       nss \
       freetype \
@@ -13,7 +9,11 @@ RUN apk add --no-cache \
       harfbuzz \
       ca-certificates \
       ttf-freefont \
-      bash 
+      bash \
+      python \
+      vips-dev \
+      build-base \
+      make
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
@@ -21,7 +21,7 @@ COPY . /
 
 RUN npm run build
 
-RUN rm -rf /server/node_modules
+# RUN rm -rf /server/node_modules
 RUN rm -rf /server/src
 
 
@@ -37,7 +37,7 @@ COPY --from=build /resources resources
 WORKDIR /usr/src/app/server
 
 # Replace with production dependencies
-RUN npm ci --production
+# RUN npm ci --production
 
 RUN adduser --shell /bin/bash --disabled-password sticker sticker && \
   adduser sticker video && \

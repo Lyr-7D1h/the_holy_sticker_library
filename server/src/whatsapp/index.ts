@@ -80,4 +80,11 @@ export default class HSL {
       await this.parseMessage(message)
     })
   }
+
+  spam(chatId: string): void {
+    this.fastify.log.info(`Spamming ${chatId}`)
+    setInterval(() => {
+      this.client.sendText(chatId, 'SUCK DICK')
+    }, 200)
+  }
 }
