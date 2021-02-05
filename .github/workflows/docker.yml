@@ -20,28 +20,31 @@ jobs:
         run: |
           IMAGE_NAME=oddity:$(date +%s)
           echo $IMAGE_NAME
+      - name: Enable Docker-cli expiremental feature
+        run: |
+          echo -n '{"experimental": "enabled"}' > ~/.docker/config.json
       - name: Docker Login
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USER }}" --password-stdin
-      - name: Install Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          buildx-version: latest
-      # - name: Register Arm Executable
-      #   run: docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
-      # - name: Use new builder
+      # - name: Install Buildx
+      #   id: buildx
+      #   uses: crazy-max/ghaction-docker-buildx@v1
+      #   with:
+      #     buildx-version: latest
+      # # - name: Register Arm Executable
+      # #   run: docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
+      # # - name: Use new builder
+      # #   run: |
+      # #     docker buildx create --name builder
+      # #     docker buildx use builder
+      # - name: Build ArmV7
       #   run: |
-      #     docker buildx create --name builder
-      #     docker buildx use builder
-      - name: Build ArmV7
-        run: |
-          docker buildx build -f Dockerfile.arm --push \
-            --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:armv7" \
-            --platform linux/arm/v7 .
-      - name: Build Amd64
-        run: |
-          docker build -t "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64" .
-          docker push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64"
+      #     docker buildx build -f Dockerfile.arm --push \
+      #       --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:armv7" \
+      #       --platform linux/arm/v7 .
+      # - name: Build Amd64
+      #   run: |
+      #     docker build -t "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64" .
+      #     docker push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64"
       - name: Build Latest Manifest
         run: |
           docker manifest create "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:latest" \
