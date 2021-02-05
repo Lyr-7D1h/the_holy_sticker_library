@@ -4,7 +4,7 @@
 # https://docs.docker.com/engine/reference/commandline/manifest/
 # https://docs.docker.com/buildx/working-with-buildx/
 
-name: Publish Stable Docker
+name: Publish Docker
 
 on: workflow_dispatch
 
