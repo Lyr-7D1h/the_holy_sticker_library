@@ -36,16 +36,21 @@ jobs:
       - name: Build ArmV7
         run: |
           docker buildx build -f Dockerfile.arm --push \
-            --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:${GITHUB_SHA::8}" \
             --tag "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:armv7" \
             --platform linux/arm/v7 .
       - name: Build Amd64
         run: |
           docker build -t "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64" .
           docker push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64"
-      - name: Build shared manifest
+      - name: Build Latest Manifest
         run: |
-          docker manifest create "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:stable" \
+          docker manifest create "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:latest" \
             "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:armv7" \
             "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64" \
-          docker manifest push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:stable"
+          docker manifest push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:latest"
+      - name: Build SHA Manifest
+        run: |
+          docker manifest create "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:${GITHUB_SHA::8}" \
+            "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:armv7" \
+            "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:amd64" \
+          docker manifest push "${{secrets.DOCKERHUB_USER}}/holy_sticker_lib:${GITHUB_SHA::8}"
