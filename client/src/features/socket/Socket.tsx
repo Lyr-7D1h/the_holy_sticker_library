@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { SocketEvent, SocketParsingError } from '@shared/socket'
 
-const sock = new WebSocket('ws://localhost:5000/ws')
+const sock = new WebSocket(`ws://${location.host}/ws`)
 
 sock.onerror = (e) => {
   console.error(e)
@@ -31,7 +31,7 @@ const Socket: FC = ({ children }) => {
       } catch (e) {
         event = new SocketParsingError('Client: could not parse', e)
       }
-      console.debug('Incomming event', event)
+      // console.debug('Incomming event', event)
       dispatch({ type: event.type, payload: event.payload })
     }
   })
