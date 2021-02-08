@@ -1,5 +1,10 @@
+#
+# CURRENTLY CRASHING IN RUNTIME DO NOT USE
+#
+
 # Docker production build for Arm CPU Architectures
 # See more: https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#running-on-alpine
+
 
 FROM node:14-alpine AS build
 
