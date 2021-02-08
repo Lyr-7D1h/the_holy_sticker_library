@@ -92,7 +92,7 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
       useChrome: process.env.NODE_ENV !== 'production',
       puppeteerOptions:
         process.env.NODE_ENV === 'production'
-          ? { executablePath: '/usr/bin/chromium' }
+          ? { executablePath: '/usr/bin/chromium-browser' }
           : undefined,
     }
   )
