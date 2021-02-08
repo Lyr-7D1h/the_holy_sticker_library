@@ -15,7 +15,7 @@ server/public
 **/tsconfig.tsbuildinfo
 
 Dockerfile
-**/.eslint*
+# **/.eslint*
 README.md
 .dockerignore
 .gitignore
