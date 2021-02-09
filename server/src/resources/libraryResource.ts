@@ -13,8 +13,18 @@ import {
   AddTagResponse,
 } from '@shared/tag'
 import { FastifyInstance, FastifyPluginCallback } from 'fastify'
-import { unlink } from 'fs'
+import { access, mkdir, unlink } from 'fs'
 import { join } from 'path'
+
+const STICKERS_DIR = join(__dirname, `../../../resources/stickers`)
+
+access(STICKERS_DIR, (err) => {
+  if (err) {
+    mkdir(STICKERS_DIR, (err) => {
+      if (err) console.error(`Failes to create ${STICKERS_DIR}`)
+    })
+  }
+})
 
 const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
   /**
@@ -63,6 +73,7 @@ const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
       })
     }
   )
+  /** Remove tags and sticker */
   fastify.addAdminSocketHandler(
     RemoveStickerRequest.type,
     (event: RemoveStickerRequest) => {
@@ -79,10 +90,7 @@ const library: FastifyPluginCallback = (fastify: FastifyInstance, _, done) => {
               (err) => {
                 if (err) rej(err)
                 unlink(
-                  join(
-                    __dirname,
-                    `../../../resources/stickers/${event.payload.hash}.webp`
-                  ),
+                  join(STICKERS_DIR, `${event.payload.hash}.webp`),
                   (err) => {
                     if (err) rej(err)
                     res(new RemoveStickerResponse(event.payload.hash))
