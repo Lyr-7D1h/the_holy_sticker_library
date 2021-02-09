@@ -43,7 +43,9 @@ RUN adduser --shell /bin/bash --disabled-password sticker sticker && \
   adduser sticker video && \
   adduser sticker audio
 
-RUN chown -R sticker:sticker ..
+RUN chown -R sticker:sticker ../resources
+# Hack to support undefined DB_PATH
+RUN chown -R sticker:sticker .
 
 USER sticker
 

@@ -21,7 +21,7 @@ const STICKERS_DIR = join(__dirname, `../../../resources/stickers`)
 access(STICKERS_DIR, (err) => {
   if (err) {
     mkdir(STICKERS_DIR, (err) => {
-      if (err) console.error(`Failes to create ${STICKERS_DIR}`)
+      if (err) console.error(`Failed to create ${STICKERS_DIR}: ${err}`)
     })
   }
 })
