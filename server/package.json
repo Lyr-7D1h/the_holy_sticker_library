@@ -36,7 +36,7 @@
     "rxjs": "^6.6.3",
     "sqlite3": "^5.0.0",
     "venom-bot": "^2.2.3",
-    "ws": "^7.4.2"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@types/node": "^14.14.20",
