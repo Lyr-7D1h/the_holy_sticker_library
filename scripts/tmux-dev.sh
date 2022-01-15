@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # 
 # AUTO RUN YOUR PROJECTS WITH ALL PANELS NEEDED
 #

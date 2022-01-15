@@ -1,3 +1,4 @@
+import { execSync } from 'child_process'
 import { FastifyInstance, FastifyPluginCallback } from 'fastify'
 import fp from 'fastify-plugin'
 import fs from 'fs'
@@ -58,6 +59,10 @@ function writeQR(qrCode: string) {
   fs.writeFileSync(join(__dirname, '../../../resources/qr.png'), buffer)
 }
 
+function getChromiumPath() {
+  return execSync('readlink $(which chromium-browser)').toString()
+}
+
 /**
  * Setting up venom library to work with fastify
  */
@@ -92,7 +97,7 @@ const venomPlugin: FastifyPluginCallback = (fastify, _, done) => {
       useChrome: process.env.NODE_ENV !== 'production',
       puppeteerOptions:
         process.env.NODE_ENV === 'production'
-          ? { executablePath: '/usr/bin/chromium-browser' }
+          ? { executablePath: getChromiumPath() }
           : undefined,
     }
   )
